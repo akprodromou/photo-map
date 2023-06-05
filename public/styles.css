@@ -8,7 +8,9 @@ body {
 .leaflet-popup-content-wrapper {
   display: flex;
   justify-content: center;
-  padding: 5px
+  padding: 5px;
+  max-width: 60vw;
+  max-height: 60vw;
 }
 
 .leaflet-popup-content {
@@ -17,7 +19,11 @@ body {
   justify-content: center;
   margin: 20px;
   width: auto !important; /* Set width to auto */
-  max-width: 100%; /* Ensure the content does not exceed the available width */
+}
+
+.popup-image {
+  max-width: 60vw;
+  max-height: 60vw;
 }
 
 .leaflet-popup-tip {
@@ -40,6 +46,11 @@ body {
   color: #888888;
   top: 3px;
   right: 1.5px;
+}
+
+/* Add this CSS rule to limit the height of the image */
+.popup-image img {
+  max-height: 40vw; /* Adjust the value to your desired height */
 }
 
 /* Slider css */
