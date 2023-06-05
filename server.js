@@ -4,10 +4,10 @@ const express = require("express");
 const session = require("express-session");
 const app = express();
 
-const server = http.createServer(app);
-
 app.use(session({
-  secret: "nocode",   
+  secret: "nocode",
+  resave: false,
+  saveUninitialized: false,
 }));
 
 const port = process.env.PORT || 5000;
@@ -25,7 +25,6 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 const flash = require("express-flash");
-const session = require("express-session");
 const methodOverride = require("method-override");
 const fs = require("fs");
 const multer = require("multer");
