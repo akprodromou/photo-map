@@ -1,8 +1,14 @@
 const http = require('http');
 const { hostname } = require('os');
-// Create an Express application
 const express = require("express");
+const session = require("express-session");
 const app = express();
+
+const server = http.createServer(app);
+
+app.use(session({
+  secret: "nocode",   
+}));
 
 const port = process.env.PORT || 5000;
 const server = http.createServer(app);
@@ -10,7 +16,6 @@ const server = http.createServer(app);
 server.listen(port, () => {
   console.log(`Started on port ${port}`);
 });
-
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
