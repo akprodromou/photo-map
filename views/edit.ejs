@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Thessaloniki History Photomap</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/public/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-***" crossorigin="anonymous" />
+
+  </head>
+  
+  <body>
+    <h1>Edit Marker</h1>
+    <form action="/markers/<%= markerData.id %>/edit" method="POST">
+      <!-- Include the necessary form fields to edit the marker data -->
+      <!-- For example: latitude, longitude, date, caption, etc. -->
+      <label for="lat">Latitude:</label>
+      <input type="text" name="lat" id="lat" value="<%= markerData.lat %>" required>
+    
+      <label for="lng">Longitude:</label>
+      <input type="text" name="lng" id="lng" value="<%= markerData.lng %>" required>
+    
+      <label for="date">Date:</label>
+      <input type="text" name="date" id="date" value="<%= markerData.date %>" required>
+    
+      <label for="caption">Caption:</label>
+      <textarea name="caption" id="caption"><%= markerData.caption %></textarea>
+    
+      <label for="image">Image:</label>
+      <input type="file" name="image" id="image">
+
+      <!-- Add more form fields as needed -->
+
+      <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- Scripts go below -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+    <script src="/public/js/auth.js"></script>
+    <script type="module" src="/public/js/app.js"></script>
+    <script>
+      var sliderContainer = document.querySelector(".slider-container");
+      var hideButton = document.getElementById("hideButton");
+      var mapContainer = document.getElementById("mapid");
+      var sliderVisible = true;
+
+      function toggleSlider() {
+        sliderContainer.classList.toggle("hidden"); // Add or remove the "hidden" class
+        mapContainer.style.height = sliderVisible ? "100%" : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
+        sliderVisible = !sliderVisible;
+      }
+    </script>
+  </body>
+</html>

@@ -101,6 +101,20 @@ fetch("/markers")
 
         popupContent.appendChild(shareButton);
 
+        // Create an edit button
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.innerHTML = '<i class="fas fa-edit"></i>';
+        editButton.classList.add("edit-button");
+        popupContent.appendChild(editButton);
+
+        // Add event listener for edit button
+        editButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          // Redirect the user to the edit page for the specific marker
+          window.location.href = `/markers/${markerData.markerId}/edit`;
+        });
+
         marker.bindPopup(popupContent);
 
         const decade = getDecade(markerData.date);

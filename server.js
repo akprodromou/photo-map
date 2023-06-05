@@ -264,6 +264,78 @@ app.get('/markers/:id', (req, res) => {
 });
 
 
+// Display the edit page
+app.get('/markers/:id/edit', checkAuthenticated, (req, res) => {
+  const markerId = req.params.id;
+  dbmarkers.get(
+    "SELECT * FROM markers WHERE id = ?",
+    [markerId],
+    (err, row) => {
+      if (err) {
+        console.error("Error retrieving marker data:", err);
+        res.status(500).send("Error retrieving marker data");
+      } else if (!row) {
+        res.status(404).send("Marker not found");
+      } else {
+        const markerData = row;
+        res.render("edit.ejs", { markerData }); // Render the edit.ejs template and pass the markerData
+      }
+    }
+  );
+});
+
+// Handle the form submission to update the marker
+app.post('/markers/:id/edit', checkAuthenticated, (req, res) => {
+  const markerId = req.params.id;
+  const { lat, lng, date, caption } = req.body;
+
+  // Update the marker data in the database
+  dbmarkers.run(
+    "UPDATE markers SET lat = ?, lng = ?, date = ?, caption = ? WHERE id = ?",
+    [lat, lng, date, caption, markerId],
+    (err) => {
+      if (err) {
+        console.error("Error updating marker data:", err);
+        res.status(500).send("Error updating marker data");
+      } else {
+        res.redirect("/index"); // Redirect to the markers page after successful update
+      }
+    }
+  );
+});
+
+
+// Edit markers
+// app.put('/markers/:id', checkAuthenticated, upload.single('image'), async (req, res) => {
+//   const markerId = req.params.id;
+//   const { lat, lng, date, caption } = req.body;
+//   const image = req.file;
+//   try {
+//     const imageBuffer = fs.readFileSync(image.path);
+//     await dbmarkers.run(
+//       "UPDATE markers SET lat = ?, lng = ?, image = ?, date = ?, caption = ? WHERE id = ?",
+//       [lat, lng, imageBuffer, date, caption, id],
+//       function (err) {
+//         if (err) {
+//           console.log(err);
+//           res.status(500).json({ message: "Error updating marker" });
+//         } else {
+//           res.status(200).json({ message: "Marker updated successfully" });
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Error updating marker" });
+//   } finally {
+//     if (image) {
+//       fs.unlinkSync(image.path); // delete the uploaded file from the server
+//     }
+//   }
+// });
+
+
+
 
 // Browsing 
 app.get("/", (req, res) => {
