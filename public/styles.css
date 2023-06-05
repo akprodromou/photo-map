@@ -48,7 +48,7 @@ body {
   right: 1.5px;
 }
 
-/* Add this CSS rule to limit the height of the image */
+/* CSS rule to limit the height of the image */
 .popup-image img {
   max-height: 40vw; /* Adjust the value to your desired height */
 }
