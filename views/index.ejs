@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Thessaloniki History Photomap</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/public/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-***" crossorigin="anonymous" />
+
+  </head>
+
+  <body>
+    <!-- Add a map -->
+    <div id="mapid"></div>
+    <!-- Add the slider -->
+    <div class="slider-container">
+      <button id="hideButton" onclick="toggleSlider()">
+        <img src="./public/slider_arrow.png" alt="Hide/Show Arrow" />
+      </button>
+      <div id="slider"></div>
+    </div>
+
+    <!-- Scripts go below -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+    <script src="/public/js/auth.js"></script>
+    <script type="module" src="/public/js/app.js"></script>
+    <script>
+      var sliderContainer = document.querySelector(".slider-container");
+      var hideButton = document.getElementById("hideButton");
+      var mapContainer = document.getElementById("mapid");
+      var sliderVisible = true;
+
+      function toggleSlider() {
+        sliderContainer.classList.toggle("hidden"); // Add or remove the "hidden" class
+        mapContainer.style.height = sliderVisible ? "100%" : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
+        sliderVisible = !sliderVisible;
+      }
+    </script>
+  </body>
+</html>

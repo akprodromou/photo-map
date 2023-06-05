@@ -1,0 +1,221 @@
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Leaflet css */
+
+.leaflet-popup-content-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 5px
+}
+
+.leaflet-popup-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  width: auto !important; /* Set width to auto */
+  max-width: 100%; /* Ensure the content does not exceed the available width */
+}
+
+.leaflet-popup-tip {
+  background: rgba(0, 0, 0, 0) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-popup-content img {
+  max-width: 60vw;
+  max-height: 70vw;
+  width: auto;
+  height: auto;
+}
+
+.leaflet-container {
+  font: 12px/20px Georgia, serif;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #888888;
+  top: 3px;
+  right: 1.5px;
+}
+
+/* Slider css */
+
+#slider {
+  margin: 0 auto;
+  width: 80%;
+}
+.noUi-connect {
+  background-color: #3388ff;
+}
+
+.noUi-tooltip {
+  display: block;
+}
+
+.slider-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  transition: height 0.3s ease; /* Add transition for smooth animation */
+}
+
+#hideButton {
+  position: absolute;
+  top: 22.5px; /* Adjust the top value to position the button */
+  left: calc(50% - 15px);
+  padding: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Add transition for smooth animation */
+  visibility: visible; /* Ensure the button is visible */
+  z-index: 9999; /* Set a higher z-index value to ensure the button is clickable */
+}
+
+#hideButton img {
+  width: 20px; /* Adjust the width of the arrow image */
+  transition: transform 0.3s ease; /* Add transition for smooth animation */
+  transform: rotate(180deg);
+}
+
+.slider-container.hidden {
+  height: 0;
+  visibility: hidden;
+  z-index: 9999; /* Set a higher z-index value to ensure the button is clickable */
+}
+
+.slider-container.hidden #hideButton {
+  top: -40px; /* Adjust the top value to position the button */
+  visibility: visible; /* Ensure the button is visible */
+  transform: rotate(
+    180deg
+  ); /* Rotate the arrow image 180 degrees when the slider is hidden */
+}
+
+#mapid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(
+    100% - 100px
+  ); /* Subtract the height of the slider container from 100% */
+  transition: height 0.3s ease; /* Add transition for smooth animation */
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.filter-select {
+  margin-left: 10px;
+}
+
+/* CSS */
+.noUi-value-large {
+  font-size: 14px; /* Adjust the font size as needed */
+}
+
+/* CSS */
+.noUi-value {
+  font: small-caps 12px/20px Georgia, serif;
+  padding: 4px; /* Adjust the padding as needed */
+}
+
+.noUi-value-sub {
+  color: #676767;
+}
+
+.noUi-pips {
+  color: #676767;
+}
+
+#slider {
+  height: 10px;
+}
+
+#slider .noUi-connect {
+  background: #eaddca;
+}
+
+#slider .noUi-handle {
+  height: 18px;
+  width: 18px;
+  top: -5px;
+  right: -9px; /* half the width */
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: #d4ba93;
+  box-shadow: none;
+}
+
+/* Hide markers on slider handles */
+.noUi-origin .noUi-handle::before,
+.noUi-origin .noUi-handle::after {
+  display: none;
+}
+
+/* Flex container styles for popup content */
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.popup-image {
+  margin-bottom: 10px; /* Add margin at the bottom of the image container */
+}
+
+.caption-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Add margin at the bottom of the caption container */
+}
+.caption {
+  display: inline-block; /* Make the caption an inline-block element */
+}
+
+.share-button {
+  font: 12px/20px Georgia, serif;
+  padding: 6px 5px 5px 5.5px;
+  background-color: white;
+  color: #888888;
+  border: 1px solid rgba(136, 136, 136, 0.3);
+  display: flex!important; 
+  border-radius: 8px;
+  box-shadow: 1px 1px 0px 0px rgba(136, 136, 136, 0.3);
+  transition: background-color 0.3s ease; /* Add transition for smooth animation */
+}
+
+.share-button:hover {
+  cursor: pointer; /* Change cursor style on hover */
+}
+
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in-animation {
+  animation-name: fade-in;
+  animation-duration: 1s;
+}
+
