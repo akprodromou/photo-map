@@ -121,7 +121,7 @@ function getDecade(dateString) {
 }
 
 function updateSlider() {
-  const startYear = 1880;
+  const startYear = 1860;
   const endYear = 2020;
   const decades = [startYear, endYear]; // Include both startYear and endYear
 
@@ -152,10 +152,10 @@ var sliderVisible = true;
 
 noUiSlider
   .create(slider, {
-    start: [1880, 2020],
+    start: [1860, 2020],
     connect: true,
     range: {
-      min: 1880,
+      min: 1860,
       max: 2020,
     },
     format: {
