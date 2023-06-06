@@ -9,9 +9,7 @@ body {
   display: flex;
   justify-content: center;
   padding: 5px;
-  max-width: 60vw;
-  max-height: 60vw;
-}
+ }
 
 .leaflet-popup-content {
   display: flex;
@@ -19,11 +17,7 @@ body {
   justify-content: center;
   margin: 20px;
   width: auto !important; /* Set width to auto */
-}
-
-.popup-image {
-  max-width: 60vw;
-  max-height: 60vw;
+  height: auto !important; /* Set height to auto */
 }
 
 .leaflet-popup-tip {
@@ -32,10 +26,14 @@ body {
 }
 
 .leaflet-popup-content img {
-  max-width: 60vw;
-  max-height: 60vw;
   width: auto;
   height: auto;
+}
+
+/* CSS rule to limit the height of the image */
+.popup-image img {
+  max-height: 50vh; 
+  max-width: 50vw;
 }
 
 .leaflet-container {
@@ -46,11 +44,6 @@ body {
   color: #888888;
   top: 3px;
   right: 1.5px;
-}
-
-/* CSS rule to limit the height of the image */
-.popup-image img {
-  max-height: 40vw; /* Adjust the value to your desired height */
 }
 
 /* Slider css */
@@ -82,35 +75,36 @@ body {
 
 #hideButton {
   position: absolute;
-  top: 22.5px; /* Adjust the top value to position the button */
+  bottom: 55px; /* Adjust the top value to position the button */
   left: calc(50% - 15px);
   padding: 5px;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  transition: transform 0.3s ease; /* Add transition for smooth animation */
   visibility: visible; /* Ensure the button is visible */
   z-index: 9999; /* Set a higher z-index value to ensure the button is clickable */
+  transform: rotate(
+    180deg
+  ); /* Rotate the arrow image 180 degrees when the slider is hidden */
 }
 
 #hideButton img {
   width: 20px; /* Adjust the width of the arrow image */
-  transition: transform 0.3s ease; /* Add transition for smooth animation */
-  transform: rotate(180deg);
+  /* transition: transform 0.3s ease; Add transition for smooth animation */
 }
 
 .slider-container.hidden {
   height: 0;
   visibility: hidden;
   z-index: 9999; /* Set a higher z-index value to ensure the button is clickable */
-}
-
-.slider-container.hidden #hideButton {
-  top: -40px; /* Adjust the top value to position the button */
-  visibility: visible; /* Ensure the button is visible */
   transform: rotate(
     180deg
   ); /* Rotate the arrow image 180 degrees when the slider is hidden */
+}
+
+.slider-container.hidden #hideButton {
+  top: 20px; /* Adjust the top value to position the button */
+  visibility: visible; /* Ensure the button is visible */
 }
 
 #mapid {

@@ -135,24 +135,7 @@ function getDecade(dateString) {
 }
 
 function updateSlider() {
-  const startYear = 1860;
-  const endYear = 2020;
-  const decades = [startYear, endYear]; // Include both startYear and endYear
-
-  console.log("Start year: ", startYear);
-  console.log("End year: ", endYear);
-  console.log("Decades: ", decades);
-
-  if (decades.length === 0) {
-    console.log("No valid decades found.");
-    return;
-  }
-
   slider.noUiSlider.updateOptions({
-    range: {
-      min: startYear,
-      max: endYear,
-    },
     connect: true,
   });
   // Call the filterMarkers function when the slider value changes
@@ -164,8 +147,26 @@ var slider = document.getElementById("slider");
 var hideButton = document.getElementById("hideButton");
 var sliderVisible = true;
 
-noUiSlider
-  .create(slider, {
+// Function to change slider step based on screen size
+$(document).ready(function() {
+  var slider = document.getElementById("slider");
+
+  // Function to update the slider step based on screen width
+  function updateSliderStep() {
+    var screenWidth = $(window).width();
+    var defaultStep = 10;
+
+    if (screenWidth < 768) {
+      defaultStep = 20;
+    }
+
+    slider.noUiSlider.updateOptions({
+      step: defaultStep
+    });
+  }
+
+  // Create the noUiSlider with the initial options
+  noUiSlider.create(slider, {
     start: [1860, 2020],
     connect: true,
     range: {
@@ -178,9 +179,12 @@ noUiSlider
     },
     step: 10,
     pips: { mode: "steps" },
-    // tooltips: true,
-  })
-  .on("slide", filterMarkers);
+  }).on("slide", filterMarkers);
+
+  // Update the slider step when the window is resized
+  $(window).on("resize", updateSliderStep);
+});
+
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
