@@ -100,16 +100,26 @@
     closePopup();
   });
 
-  // Close the about popup when the user clicks outside of it
+
 // Close the about popup when the user clicks outside of it
-window.addEventListener("mousedown", function (event) {
+mapContainer.addEventListener("mousedown", function (event) {
   var target = event.target;
-  var isClickInsidePopup = aboutPopup.contains(target) || target === aboutLink;
-  var isClickOnBackgroundOverlay = target.classList.contains("blocker");
-  if (!isClickInsidePopup && !isClickOnBackgroundOverlay && aboutPopup.classList.contains("visible")) {
+  var isClickInsidePopup =
+    aboutPopup.contains(target) || target === aboutLink;
+  var isClickOnBackgroundOverlay = target.classList.contains("about-popup");
+  var isClickOnPopupContent =
+    target.closest(".about-popup-content") !== null;
+  if (
+    !isClickInsidePopup &&
+    !isClickOnBackgroundOverlay &&
+    !isClickOnPopupContent &&
+    aboutPopup.classList.contains("visible")
+  ) {
     closePopup();
   }
 });
+
+
 
     </script>
   </body>
