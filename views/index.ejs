@@ -16,13 +16,23 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/public/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-***" crossorigin="anonymous" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-***"
+      crossorigin="anonymous"
+    />
   </head>
 
   <body>
+    <!-- Add the "About" link -->
+    <a href="#" id="aboutLink" class="popup-link" onclick="openPopup()"
+      >About</a
+    >
+
     <!-- Add a map -->
     <div id="mapid"></div>
+
     <!-- Add the slider -->
     <div class="slider-container">
       <button id="hideButton" onclick="toggleSlider()">
@@ -30,6 +40,21 @@
       </button>
       <div id="slider"></div>
     </div>
+
+  <!-- About Popup -->
+  <div id="aboutPopup" class="about-popup">
+    <div class="about-popup-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      <h2>About</h2>
+      <p>Add your text here about the application.</p>
+      <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+        <br />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
 
     <!-- Scripts go below -->
     <script
@@ -49,9 +74,43 @@
 
       function toggleSlider() {
         sliderContainer.classList.toggle("hidden"); // Add or remove the "hidden" class
-        mapContainer.style.height = sliderVisible ? "100%" : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
+        mapContainer.style.height = sliderVisible
+          ? "100%"
+          : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
         sliderVisible = !sliderVisible;
       }
+
+  // Existing JavaScript code
+
+  var aboutLink = document.getElementById("aboutLink");
+  var aboutPopup = document.getElementById("aboutPopup");
+
+  // Open the about popup
+  function openPopup() {
+    aboutPopup.classList.add("visible");
+  }
+
+  // Close the about popup
+  function closePopup() {
+    aboutPopup.classList.remove("visible");
+  }
+
+  // Close the about popup when the page loads
+  window.addEventListener("load", function () {
+    closePopup();
+  });
+
+  // Close the about popup when the user clicks outside of it
+// Close the about popup when the user clicks outside of it
+window.addEventListener("mousedown", function (event) {
+  var target = event.target;
+  var isClickInsidePopup = aboutPopup.contains(target) || target === aboutLink;
+  var isClickOnBackgroundOverlay = target.classList.contains("blocker");
+  if (!isClickInsidePopup && !isClickOnBackgroundOverlay && aboutPopup.classList.contains("visible")) {
+    closePopup();
+  }
+});
+
     </script>
   </body>
 </html>

@@ -46,6 +46,76 @@ body {
   right: 1.5px;
 }
 
+/* About Popup */
+.about-popup {
+  display: none; /* Hide the popup by default */
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.about-popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.about-popup-content h2 {
+  margin-top: 0;
+}
+
+.about-popup-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.about-popup-content textarea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+.about-popup-content button[type="submit"] {
+  background-color: #3388ff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.about-popup.visible {
+  display: block; /* Show the popup when the "visible" class is added */
+}
+
+#aboutLink {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #3388ff;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#aboutLink.visible {
+  display: block;
+}
+
+
 /* Slider css */
 
 #slider {
