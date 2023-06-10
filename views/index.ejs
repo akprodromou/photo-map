@@ -41,20 +41,24 @@
       <div id="slider"></div>
     </div>
 
-  <!-- About Popup -->
-  <div id="aboutPopup" class="about-popup">
-    <div class="about-popup-content">
-      <span class="close" onclick="closePopup()">&times;</span>
-      <h2>About</h2>
-      <p>Add your text here about the application.</p>
-      <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
-        <label for="comments">Comments:</label>
-        <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
-        <br />
-        <button type="submit">Send</button>
-      </form>
+    <!-- About Popup -->
+    <div id="aboutPopup" class="about-popup">
+      <div class="about-popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <h2>About</h2>
+        <p>Add your text here about the application.</p>
+        <form
+          action="mailto:your-email@example.com"
+          method="post"
+          enctype="text/plain"
+        >
+          <label for="comments">Comments:</label>
+          <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+          <br />
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </div>
-  </div>
 
     <!-- Scripts go below -->
     <script
@@ -80,47 +84,45 @@
         sliderVisible = !sliderVisible;
       }
 
-  // Existing JavaScript code
+      // Existing JavaScript code
 
-  var aboutLink = document.getElementById("aboutLink");
-  var aboutPopup = document.getElementById("aboutPopup");
+      var aboutLink = document.getElementById("aboutLink");
+      var aboutPopup = document.getElementById("aboutPopup");
 
-  // Open the about popup
-  function openPopup() {
-    aboutPopup.classList.add("visible");
-  }
+      // Open the about popup
+      function openPopup() {
+        aboutPopup.classList.add("visible");
+      }
 
-  // Close the about popup
-  function closePopup() {
-    aboutPopup.classList.remove("visible");
-  }
+      // Close the about popup
+      function closePopup() {
+        aboutPopup.classList.remove("visible");
+      }
 
-  // Close the about popup when the page loads
-  window.addEventListener("load", function () {
-    closePopup();
-  });
+      // Close the about popup when the page loads
+      window.addEventListener("load", function () {
+        closePopup();
+      });
 
-
-// Close the about popup when the user clicks outside of it
-mapContainer.addEventListener("mousedown", function (event) {
-  var target = event.target;
-  var isClickInsidePopup =
-    aboutPopup.contains(target) || target === aboutLink;
-  var isClickOnBackgroundOverlay = target.classList.contains("about-popup");
-  var isClickOnPopupContent =
-    target.closest(".about-popup-content") !== null;
-  if (
-    !isClickInsidePopup &&
-    !isClickOnBackgroundOverlay &&
-    !isClickOnPopupContent &&
-    aboutPopup.classList.contains("visible")
-  ) {
-    closePopup();
-  }
-});
-
-
-
+      // Close the about popup when the user clicks outside of it
+      window.addEventListener("mousedown", function (event) {
+        var target = event.target;
+        var isClickInsidePopup =
+          aboutPopup.contains(target) || target === aboutLink;
+        var isClickOnBackgroundOverlay =
+          target.classList.contains("about-popup");
+        var isClickOnPopupContent =
+          target.closest(".about-popup-content") !== null ||
+          target.classList.contains("about-popup-content");
+        if (
+          !isClickInsidePopup &&
+          !isClickOnBackgroundOverlay &&
+          !isClickOnPopupContent &&
+          aboutPopup.classList.contains("visible")
+        ) {
+          closePopup();
+        }
+      });
     </script>
   </body>
 </html>
