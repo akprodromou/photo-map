@@ -1,8 +1,6 @@
 var myIcon = L.icon({
   iconUrl: "../public/photograph.png",
   iconSize: [28, 28],
-  // iconAnchor: [22, 94],
-  // popupAnchor: [-3, -76],
   shadowSize: [68, 95],
   shadowAnchor: [22, 94],
 });
