@@ -27,7 +27,7 @@
   <body>
     <!-- Add the "About" link -->
     <a href="#" id="aboutLink" class="popup-link" onclick="openPopup()"
-      >About</a
+      >Σχετικά</a
     >
 
     <!-- Add a map -->
@@ -45,17 +45,40 @@
     <div id="aboutPopup" class="leaflet-popup about-popup">
       <div class="leaflet-popup-content about-popup-content">
         <span class="close" onclick="closePopup()">&times;</span>
-        <h2>About</h2>
-        <p>Add your text here about the application.</p>
+        <h2>Σχετικά με τη σελίδα</h2>
+        <div class="about-text">
+          <p>
+            Η σελίδα αυτή έχει ως στόχο να συγκεντρώσει σε ένα σημείο
+            φωτογραφίες από την ιστορία της Θεσσαλονίκης, δημιουργώντας έτσι μια
+            αφήγηση για τη μεταμόρφωση της πόλης από το 1860 κι έπειτα. Η
+            λειτουργία της είναι μη κερδοσκοπική και το υλικό προέρχεται από
+            ιστότοπους που περιλαμβάνουν την βιβλιοθήκη
+            <a
+              href="https://gallica.bnf.fr/services/engine/search/sru?operation=searchRetrieve&version=1.2&query=%28gallica%20all%20%22salonique%22%29&lang=en&suggest=0#resultat-id-12"
+              >Gallica</a
+            >
+            και τη σελίδα
+            <a href="https://www.facebook.com/groups/oldthessaloniki/"
+              >Παλιές φωτογραφίες της Θεσσαλονίκης</a
+            >.<br /><br />
+            Εάν θέλετε να συνεισφέρετε στον εμπλουτισμό και τη βελτίωσή της παρακαλώ επικοινωνήστε
+            χρησιμοποιώντας την παρακάτω φόρμα:
+          </p>
+        </div>
         <form
           action="mailto:your-email@example.com"
           method="post"
           enctype="text/plain"
         >
-          <label for="comments">Comments:</label>
-          <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
-          <br />
-          <button type="submit">Send</button>
+          <div class="comment-area">
+            <textarea
+              id="comments"
+              name="comments"
+              rows="4"
+              cols="50"
+            ></textarea>
+          </div>
+          <button type="submit">Αποστολή</button>
         </form>
       </div>
     </div>
@@ -91,12 +114,14 @@
 
       // Open the about popup
       function openPopup() {
-        aboutPopup.style.display = "block";
+        aboutPopup.style.visibility = "visible";
+        aboutPopup.classList.add("visible");
       }
 
       // Close the about popup
       function closePopup() {
-        aboutPopup.style.display = "none";
+        aboutPopup.style.visibility = "hidden";
+        aboutPopup.classList.remove("visible");
       }
 
       // Close the about popup when the user clicks outside of it
@@ -104,7 +129,7 @@
         var target = event.target;
         var isClickInsidePopup =
           aboutPopup.contains(target) || target === aboutLink;
-        if (!isClickInsidePopup && aboutPopup.style.display === "block") {
+        if (!isClickInsidePopup && aboutPopup.style.visibility === "visible") {
           closePopup();
         }
       });

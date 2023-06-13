@@ -13,7 +13,7 @@ body {
 
 .leaflet-popup-content {
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: center;
   margin: 20px;
   width: auto !important; /* Set width to auto */
@@ -59,11 +59,91 @@ body {
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
+  font: 14px Georgia, serif;
 }
 
 #aboutLink:hover {
   background-color: #2962b8;
 }
+
+.about-popup {
+  visibility: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.leaflet-popup-content.about-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  font: 14px Georgia, serif;
+  line-height: 1.6;
+  text-align: center; /* Center the entire content */
+  display: flex;
+  flex-direction: column;
+}
+
+.leaflet-popup-content.about-popup-content h2 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.about-popup-content .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 18px;
+  color: #888888;
+  cursor: pointer;
+}
+
+
+.about-text {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.about-text p {
+  text-align: left;
+}
+
+.comment-area {
+  margin-bottom: 10px;
+}
+
+.comment-area label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left; /* Align the label text to the left */
+}
+
+.comment-area textarea {
+  width: 100%;
+  resize: vertical;
+  text-align: left; /* Align the textarea text to the left */
+  border-width: 2px;
+  border-color: #ececec;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  background-color: #3388ff;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+  text-align: center;
+}
+
+button[type="submit"]:hover {
+  background-color: #2962b8;
+}
+
 
 /* Slider css */
 
