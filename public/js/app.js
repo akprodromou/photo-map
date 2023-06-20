@@ -187,6 +187,8 @@ $(document).ready(function() {
   $(window).on("resize", updateSliderStep);
 });
 
+// Call the function immediately to set the initial slider step
+updateSliderStep();
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
