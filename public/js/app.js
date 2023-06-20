@@ -183,6 +183,9 @@ $(document).ready(function() {
     pips: { mode: "steps" },
   }).on("slide", filterMarkers);
 
+  // Call the function immediately to set the initial slider step
+  updateSliderStep();
+  
   // Update the slider step when the window is resized
   $(window).on("resize", updateSliderStep);
 });
