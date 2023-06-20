@@ -62,7 +62,7 @@ fetch("/markers")
         const imageContainer = document.createElement("div");
         imageContainer.classList.add("popup-image");
         const image = document.createElement("img");
-        image.src = markerData.photo;
+        image.src = "../uploads/images/" + markerData.photo; 
         imageContainer.appendChild(image);
         popupContent.appendChild(imageContainer);
 
