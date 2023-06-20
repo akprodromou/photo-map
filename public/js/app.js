@@ -151,15 +151,19 @@ $(document).ready(function() {
 
   // Function to update the slider step based on screen width
   function updateSliderStep() {
-    var screenWidth = $(window).width();
     var defaultStep = 10;
-
-    if (screenWidth < 768) {
-      defaultStep = 20;
+  
+    // Check if the current device is a Xiaomi 11
+    if (window.matchMedia('(max-width: 1080px) and (min-resolution: 300dpi)').matches) {
+    defaultStep = 20;
     }
-
+    // Check if the current device is a PC Chrome browser
+    else if (window.matchMedia('(max-width: 768px)').matches) {
+    defaultStep = 20;
+    }
+  
     slider.noUiSlider.updateOptions({
-      step: defaultStep
+    step: defaultStep
     });
   }
 
