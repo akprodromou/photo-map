@@ -154,7 +154,7 @@ $(document).ready(function() {
     var defaultStep = 10;
   
     // Check if the current device is a Xiaomi 11
-    if (window.matchMedia('(max-width: 1080px) and (min-resolution: 300dpi)').matches) {
+    if (window.matchMedia('(max-width: 1500px) and (min-resolution: 500dpi)').matches) {
     defaultStep = 20;
     }
     // Check if the current device is a PC Chrome browser
