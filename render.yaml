@@ -1,0 +1,23 @@
+services:
+  - name: photos-map
+    env:
+      - name: NODE_ENV
+        value: production
+    buildCommand: npm install --production
+    startCommand: node server.js
+    envVars:
+      - key: SESSION_SECRET
+        fromDatabase:
+          name: photos-map
+          query: SELECT session_secret FROM env_vars LIMIT 1
+version: 1
+routes:
+  - path: /
+    command: static
+    dir: public
+  - path: /public
+    command: static
+    dir: public
+  - path: /uploads
+    command: static
+    dir: uploads
