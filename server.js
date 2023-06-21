@@ -28,8 +28,8 @@ const flash = require("express-flash");
 const methodOverride = require("method-override");
 const fs = require("fs");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
 const ejs = require('ejs');
+const path = require("path");
 
 // SQL prerequisites
 const sqlite3 = require("sqlite3").verbose();
@@ -40,6 +40,21 @@ const dbmarkers = new sqlite3.Database("./markers.db");
 
 // use the express.static middleware to serve the static files in the "public" directory
 app.use('/public', express.static('public'))
+
+// Set up multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/uploads/images"); // Set the destination folder for uploaded images
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const extname = path.extname(file.originalname);
+    cb(null, uniqueSuffix + extname); // Generate a unique filename for the uploaded image
+  },
+});
+
+// Create a multer upload instance
+const upload = multer({ storage: storage });
 
 app.use((req, res, next) => {
   if (req.url.endsWith(".css")) {
@@ -210,7 +225,7 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
   const { lat, lng, date, caption } = req.body;
   const image = req.file;
   try {
-    const imageBuffer = fs.readFileSync(image.path);
+    const imageBuffer = fs.readFileSync(image.path); // Read the image file using fs.readFileSync
     await dbmarkers.run(
       "INSERT INTO markers (lat, lng, image, date, caption) VALUES (?, ?, ?, ?, ?)",
       [lat, lng, imageBuffer, date, caption],
@@ -228,9 +243,12 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
     console.log(error);
     res.status(500).json({ message: "Error saving marker" });
   } finally {
-    fs.unlinkSync(image.path); // delete the uploaded file from the server
+    if (image) {
+      fs.unlinkSync(image.path); // delete the uploaded file from the server
+    }
   }
 });
+
 
 // Server-side endpoint that handles requests for specific markers
 // Retrieve marker data endpoint

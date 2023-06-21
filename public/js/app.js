@@ -59,12 +59,16 @@ fetch("/markers")
         const popupContent = document.createElement("div");
         popupContent.classList.add("popup-content");
 
+        // Create the image container
         const imageContainer = document.createElement("div");
         imageContainer.classList.add("popup-image");
-        const image = document.createElement("img");
-        image.src = markerData.photo;
-        imageContainer.appendChild(image);
         popupContent.appendChild(imageContainer);
+
+        // Create an image element
+        const image = document.createElement("img");
+        image.src = markerData.photo; // Set the image source directly from the marker data
+        image.alt = "Marker Image";
+        imageContainer.appendChild(image);
 
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
@@ -129,7 +133,7 @@ fetch("/markers")
 // A function that extracts the decade from a date
 function getDecade(dateString) {
   const year = Number(dateString.substring(0, 4)); // Extract the year and convert it to a number
-  return Math.floor(year / 10) * 10;
+  return Math.floor(year / 10) * 10; // Return the exact decade
 }
 
 function updateSlider() {
@@ -146,43 +150,51 @@ var hideButton = document.getElementById("hideButton");
 var sliderVisible = true;
 
 // Function to change slider step based on screen size
-$(document).ready(function() {
+$(document).ready(function () {
   var slider = document.getElementById("slider");
 
   // Function to update the slider step based on screen width
   function updateSliderStep() {
-    var screenWidth = $(window).width();
     var defaultStep = 10;
 
-    if (screenWidth < 768) {
+    // Check if the current device is a mobile phone
+    if (
+      window.matchMedia("(max-width: 1080px) and (min-resolution: 510dpi)")
+        .matches
+    ) {
+      defaultStep = 20;
+    }
+    // Check if the current device is a PC browser
+    else if (window.matchMedia("(max-width: 768px)").matches) {
       defaultStep = 20;
     }
 
     slider.noUiSlider.updateOptions({
-      step: defaultStep
+      step: defaultStep,
     });
   }
 
   // Create the noUiSlider with the initial options
-  noUiSlider.create(slider, {
-    start: [1860, 2020],
-    connect: true,
-    range: {
-      min: 1860,
-      max: 2020,
-    },
-    format: {
-      to: (value) => Math.round(value),
-      from: (value) => Math.round(value),
-    },
-    step: 10,
-    pips: { mode: "steps" },
-  }).on("slide", filterMarkers);
+  noUiSlider
+    .create(slider, {
+      start: [1860, 2020],
+      connect: true,
+      range: {
+        min: 1860,
+        max: 2020,
+      },
+      format: {
+        to: (value) => Math.round(value),
+        from: (value) => Math.round(value),
+      },
+      step: 10,
+      pips: { mode: "steps" },
+    })
+    .on("slide", filterMarkers);
 
   // Update the slider step when the window is resized
   $(window).on("resize", updateSliderStep);
 });
-
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
@@ -292,7 +304,7 @@ function addMarker() {
             marker.closePopup();
             var newMarker = L.marker(e.latlng).addTo(mymap);
             const date = new Date(dateInput.value);
-            const decade = Math.floor(date.getFullYear() / 10) * 10; // Calculate the decade
+            const decade = Math.ceil(date.getFullYear() / 10) * 10; // Calculate the decade
             // Set decade as a property of the marker
             newMarker.decade = decade;
             newMarker.caption = captionInput.value; // Set the caption as a property of the marker
