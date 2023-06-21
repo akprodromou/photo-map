@@ -11,11 +11,6 @@ app.use(session({
 }));
 
 const port = process.env.PORT || 5000;
-const server = http.createServer(app);
-
-server.listen(port, () => {
-  console.log(`Started on port ${port}`);
-});
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -242,11 +237,7 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error saving marker" });
-  } finally {
-    if (image) {
-      fs.unlinkSync(image.path); // delete the uploaded file from the server
-    }
-  }
+  } 
 });
 
 
@@ -255,7 +246,6 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
 app.get('/markers/:id', (req, res) => {
   const markerId = req.params.id;
   // Retrieve the marker data for the given id from your data source
-  // For example, query the database using the markerId
   dbmarkers.get(
     "SELECT * FROM markers WHERE id = ?",
     [markerId],
@@ -323,38 +313,6 @@ app.post('/markers/:id/edit', checkAuthenticated, (req, res) => {
 });
 
 
-// Edit markers
-// app.put('/markers/:id', checkAuthenticated, upload.single('image'), async (req, res) => {
-//   const markerId = req.params.id;
-//   const { lat, lng, date, caption } = req.body;
-//   const image = req.file;
-//   try {
-//     const imageBuffer = fs.readFileSync(image.path);
-//     await dbmarkers.run(
-//       "UPDATE markers SET lat = ?, lng = ?, image = ?, date = ?, caption = ? WHERE id = ?",
-//       [lat, lng, imageBuffer, date, caption, id],
-//       function (err) {
-//         if (err) {
-//           console.log(err);
-//           res.status(500).json({ message: "Error updating marker" });
-//         } else {
-//           res.status(200).json({ message: "Marker updated successfully" });
-//         }
-//       }
-//     );
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Error updating marker" });
-//   } finally {
-//     if (image) {
-//       fs.unlinkSync(image.path); // delete the uploaded file from the server
-//     }
-//   }
-// });
-
-
-
-
 // Browsing 
 app.get("/", (req, res) => {
   res.render("index.ejs");
@@ -388,5 +346,8 @@ app.get("/check-authentication", function (req, res) {
 });
 
 // Start the server
-app.listen(3000);
+app.listen(port, () => {
+  console.log(`Started on port ${port}`);
+});
+
 
