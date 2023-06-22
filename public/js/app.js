@@ -46,9 +46,6 @@ fetch("/markers")
           icon: myIcon,
         }).addTo(mymap);
 
-        console.log(markerData);
-        console.log("Marker photo:", markerData.photo);
-
         const popupContent = document.createElement("div");
         popupContent.classList.add("popup-content");
 
