@@ -145,18 +145,23 @@ var sliderVisible = true;
 $(document).ready(function () {
   var slider = document.getElementById("slider");
 
-  // Function to update the slider step based on screen width
-  function updateSliderStep() {
-    var defaultStep = 10;
-
-    if (screenWidth < 768) {
-      defaultStep = 20;
-    }
-
-    slider.noUiSlider.updateOptions({
-      step: defaultStep
-    });
+// Function to update the slider step based on screen width and device resolution
+function updateSliderStep() {
+  var defaultStep = 10;
+  
+  // Check if the current device is a Xiaomi 11 with a screen width less than or equal to 1080 pixels and a pixel density of 515 PPI
+  if (window.matchMedia('(max-width: 1080px) and (min-resolution: 515dpi)').matches) {
+    defaultStep = 20;
   }
+  // Check if the current device is a PC Chrome browser with a screen width less than or equal to 768 pixels
+  else if (window.matchMedia('(max-width: 768px)').matches) {
+    defaultStep = 20;
+  }
+  
+  slider.noUiSlider.updateOptions({
+    step: defaultStep
+  });
+}
 
   // Create the noUiSlider with the initial options
   noUiSlider
@@ -179,6 +184,9 @@ $(document).ready(function () {
   // Update the slider step when the window is resized
   $(window).on("resize", updateSliderStep);
 });
+
+// Call the function immediately to set the initial slider step
+updateSliderStep();
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
