@@ -58,7 +58,7 @@ fetch("/markers")
 
         // Create an image element
         const image = document.createElement("img");
-        image.src = "/uploads/images/" + markerData.photo;
+        image.src = "/public/uploads/images/" + markerData.photo;
         image.alt = "Marker Image";
         imageContainer.appendChild(image);
 
