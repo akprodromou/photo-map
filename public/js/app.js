@@ -58,7 +58,7 @@ fetch("/markers")
 
         // Create an image element
         const image = document.createElement("img");
-        image.src = "../public/uploads/images/" + markerData.photo;
+        image.src = "/public/uploads/images/" + markerData.photo;
         image.alt = "Marker Image";
         imageContainer.appendChild(image);
 
@@ -141,10 +141,6 @@ var slider = document.getElementById("slider");
 var hideButton = document.getElementById("hideButton");
 var sliderVisible = true;
 
-// Function to change slider step based on screen size
-$(document).ready(function () {
-  var slider = document.getElementById("slider");
-
 // Function to update the slider step based on screen width and device resolution
 function updateSliderStep() {
   var defaultStep = 10;
@@ -162,6 +158,10 @@ function updateSliderStep() {
     step: defaultStep
   });
 }
+
+// Function to change slider step based on screen size
+$(document).ready(function () {
+  var slider = document.getElementById("slider");
 
   // Create the noUiSlider with the initial options
   noUiSlider
@@ -181,12 +181,13 @@ function updateSliderStep() {
     })
     .on("slide", filterMarkers);
 
+  // Call the function immediately to set the initial slider step
+  updateSliderStep();
+
   // Update the slider step when the window is resized
   $(window).on("resize", updateSliderStep);
 });
 
-// Call the function immediately to set the initial slider step
-updateSliderStep();
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
