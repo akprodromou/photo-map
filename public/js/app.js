@@ -1,5 +1,5 @@
 var myIcon = L.icon({
-  iconUrl: "../public/photograph.png",
+  iconUrl: "/public/photograph.png",
   iconSize: [28, 28],
   shadowSize: [68, 95],
   shadowAnchor: [22, 94],
