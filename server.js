@@ -209,6 +209,7 @@ app.get("/markers", (req, res) => {
         photo: `data:image/jpeg;base64,${marker.image.toString("base64")}`,
         date: marker.date,
         caption: marker.caption,
+        console.log("the markers are fetched successfully in the get function"),
       }));
       res.json(parsedMarkers);
     }
