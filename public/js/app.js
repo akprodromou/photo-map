@@ -47,6 +47,7 @@ fetch("/markers")
         }).addTo(mymap);
 
         console.log(markerData);
+        console.log("Marker photo:", markerData.photo);
 
         const popupContent = document.createElement("div");
         popupContent.classList.add("popup-content");
@@ -58,7 +59,7 @@ fetch("/markers")
 
         // Create an image element
         const image = document.createElement("img");
-        image.src = "/public/uploads/images/" + markerData.photo;
+        image.src = markerData.photo;
         image.alt = "Marker Image";
         imageContainer.appendChild(image);
 
