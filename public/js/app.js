@@ -8,9 +8,21 @@ var myIcon = L.icon({
 var mymap = L.map("mapid").setView([40.64, 22.94], 13);
 var isAuthenticated = false; // Global variable to track authentication state
 
-L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=ajtqZHjRHNlgtB8yMorgThyqCEY89y4sUcHHu7v8b7KwozAIly2TrU5zhfqC6l5I', {}).addTo(mymap);
-        mymap.attributionControl.addAttribution("<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors")
-.addTo(mymap);
+L.tileLayer(
+  "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYmVuYW50b24iLCJhIjoiY2xnb3BhenBiMHNiZDNrbW1sZGk4NXpreiJ9.q8eVg4qxlHBOJ8_06CFSXw",
+  {
+    attribution:
+      'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: "mapbox/streets-v11",
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken:
+      "pk.eyJ1IjoiYmVuYW50b24iLCJhIjoiY2xnb3BhenBiMHNiZDNrbW1sZGk4NXpreiJ9.q8eVg4qxlHBOJ8_06CFSXw",
+  }
+).addTo(mymap);
 
 // Define an empty array to store markers if it doesn't exist
 if (typeof markers === "undefined") {
