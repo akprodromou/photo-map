@@ -237,8 +237,15 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error saving marker" });
-  } 
+  } finally {
+    if (image) {
+      // Optionally, you can keep the uploaded file on the server by not deleting it
+      // fs.unlinkSync(image.path); // comment or remove this line to retain the file
+    }
+  }
 });
+
+
 
 
 // Server-side endpoint that handles requests for specific markers
