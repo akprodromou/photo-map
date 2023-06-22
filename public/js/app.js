@@ -66,8 +66,7 @@ fetch("/markers")
 
         // Create an image element
         const image = document.createElement("img");
-        image.src = markerData.photo; // Set the image source directly from the marker data
-        image.alt = "Marker Image";
+        image.src = markerData.photo;
         imageContainer.appendChild(image);
 
         const captionContainer = document.createElement("div");
@@ -157,22 +156,15 @@ $(document).ready(function () {
   function updateSliderStep() {
     var defaultStep = 10;
 
-    // Check if the current device is a mobile phone
-    if (
-      window.matchMedia("(max-width: 1080px) and (min-resolution: 510dpi)")
-        .matches
-    ) {
-      defaultStep = 20;
-    }
-    // Check if the current device is a PC browser
-    else if (window.matchMedia("(max-width: 768px)").matches) {
+    if (screenWidth < 768) {
       defaultStep = 20;
     }
 
     slider.noUiSlider.updateOptions({
-      step: defaultStep,
+      step: defaultStep
     });
   }
+
 
   // Create the noUiSlider with the initial options
   noUiSlider
