@@ -58,7 +58,7 @@ fetch("/markers")
 
         // Create an image element
         const image = document.createElement("img");
-        image.src = "../uploads/images/" + markerData.photo; 
+        image.src = markerData.photo;
         imageContainer.appendChild(image);
 
         const captionContainer = document.createElement("div");
@@ -147,20 +147,15 @@ $(document).ready(function () {
   // Function to update the slider step based on screen width
   function updateSliderStep() {
     var defaultStep = 10;
-  
-  // Check if the current device is a mobile phone
-  if (window.matchMedia('(max-width: 1080px) and (min-resolution: 510dpi)').matches) {
-    defaultStep = 20;
+
+    if (screenWidth < 768) {
+      defaultStep = 20;
+    }
+
+    slider.noUiSlider.updateOptions({
+      step: defaultStep
+    });
   }
-  // Check if the current device is a PC browser
-  else if (window.matchMedia('(max-width: 768px)').matches) {
-    defaultStep = 20;
-  }
-  
-  slider.noUiSlider.updateOptions({
-    step: defaultStep
-  });
-}
 
   // Create the noUiSlider with the initial options
   noUiSlider
