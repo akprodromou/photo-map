@@ -3,6 +3,10 @@ services:
     env:
       - name: NODE_ENV
         value: production
+      - name: DATABASE_URL
+        fromDatabase:
+          name: database
+          query: SELECT connection_uri FROM credentials WHERE connection_uri LIKE 'sqlite://%'
     buildCommand: npm install --production
     startCommand: node server.js
     envVars:
@@ -10,7 +14,12 @@ services:
         fromDatabase:
           name: photos-map
           query: SELECT session_secret FROM env_vars LIMIT 1
-version: 1
+
+databases:
+  - name: database
+    type: sqlite
+    disk: 10
+
 routes:
   - path: /
     command: static
@@ -21,8 +30,3 @@ routes:
   - path: /uploads
     command: static
     dir: uploads
-
-# files:
-#   - path: /public/uploads/images
-#     overwrite: true
-#     sourceDir: public/uploads/images
