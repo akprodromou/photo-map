@@ -30,10 +30,8 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 
 // open the database
-const dbusers = new sqlite3.Database(__dirname + "/public/uploads/images/users.db");
-const dbmarkers = new sqlite3.Database(__dirname + "/public/uploads/images/markers.db");
-// const dbusers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/users.db"));
-// const dbmarkers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/markers.db"));
+const dbusers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/users.db"));
+const dbmarkers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/markers.db"));
 
 // use the express.static middleware to serve the static files in the "public" directory
 app.use('/public', express.static('public'))
