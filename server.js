@@ -240,9 +240,6 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
   } 
 });
 
-
-
-
 // Server-side endpoint that handles requests for specific markers
 // Retrieve marker data endpoint
 app.get('/markers/:id', (req, res) => {
