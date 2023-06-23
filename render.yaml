@@ -21,5 +21,6 @@ routes:
   - path: /uploads
     command: static
     dir: uploads
-  - path: /uploads/images
-    ignore: true  # Exclude the uploads/images folder
+  - path: /public/uploads/images
+    command: none
+    ignore: true  # Exclude the uploads/images folder from deployment
