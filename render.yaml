@@ -22,7 +22,7 @@ routes:
     command: static
     dir: uploads
 
-files:
-  - path: /public/uploads/images
-    overwrite: true
-    sourceDir: public/uploads/images
+# files:
+#   - path: /public/uploads/images
+#     overwrite: true
+#     sourceDir: public/uploads/images
