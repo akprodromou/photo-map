@@ -42,7 +42,7 @@ app.use('/public', express.static('public'))
 // Set up multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/images"); // Set the destination folder for uploaded images
+    cb(null, "/public/uploads/images"); // Set the destination folder for uploaded images
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
