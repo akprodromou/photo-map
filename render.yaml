@@ -21,3 +21,5 @@ routes:
   - path: /uploads
     command: static
     dir: uploads
+  - path: /uploads/images
+    ignore: true  # Exclude the uploads/images folder
