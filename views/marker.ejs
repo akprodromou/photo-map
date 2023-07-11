@@ -29,35 +29,37 @@
     <div id="slider"></div>
   </div>
 
-  <!-- About Popup -->
-  <div id="aboutPopup" class="leaflet-popup about-popup">
-    <div class="leaflet-popup-content about-popup-content">
-      <span class="close" onclick="closeAboutPopup()">&times;</span>
-      <h2>Σχετικά με τη σελίδα</h2>
-      <div class="about-text">
-        <p>
-          Η σελίδα αυτή έχει ως στόχο να συγκεντρώσει σε ένα σημείο
-          φωτογραφίες από την ιστορία της Θεσσαλονίκης, δημιουργώντας έτσι μια
-          αφήγηση για τη μεταμόρφωση της πόλης από το 1860 κι έπειτα. Η
-          λειτουργία της είναι μη κερδοσκοπική και το υλικό προέρχεται από
-          ιστότοπους που περιλαμβάνουν την βιβλιοθήκη
-          <a
-            href="https://gallica.bnf.fr/services/engine/search/sru?operation=searchRetrieve&version=1.2&query=%28gallica%20all%20%22salonique%22%29&lang=en&suggest=0#resultat-id-12">Gallica</a>
-          και τη σελίδα
-          <a href="https://www.facebook.com/groups/oldthessaloniki/">Παλιές φωτογραφίες της
-            Θεσσαλονίκης</a>.<br /><br />
-          Εάν θέλετε να συνεισφέρετε στον εμπλουτισμό και τη βελτίωσή της
-          παρακαλώ επικοινωνήστε χρησιμοποιώντας την παρακάτω φόρμα:
-        </p>
-      </div>
-      <form action="mailto:akprodromou@gmx.com" method="post">
-        <div class="comment-area">
-          <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+    <!-- About Popup -->
+    <div id="aboutPopup" class="leaflet-popup about-popup">
+      <div class="leaflet-popup-content about-popup-content">
+        <span class="close" onclick="closeAboutPopup()">&times;</span>
+        <h2>Σχετικά με τη σελίδα</h2>
+        <div class="about-text">
+          <p>
+            Η σελίδα αυτή έχει ως στόχο να συγκεντρώσει σε ένα σημείο
+            φωτογραφίες από την ιστορία της Θεσσαλονίκης, δημιουργώντας έτσι μια
+            αφήγηση για τη μεταμόρφωση της πόλης από το 1860 κι έπειτα. Η
+            λειτουργία της είναι μη κερδοσκοπική και το υλικό προέρχεται από
+            ιστότοπους που περιλαμβάνουν την βιβλιοθήκη
+            <a
+              href="https://gallica.bnf.fr/services/engine/search/sru?operation=searchRetrieve&version=1.2&query=%28gallica%20all%20%22salonique%22%29&lang=en&suggest=0#resultat-id-12"
+              >Gallica</a
+            >
+            και τη σελίδα
+            <a href="https://www.facebook.com/groups/oldthessaloniki/"
+              >Παλιές φωτογραφίες της Θεσσαλονίκης</a
+            >.<br /><br />
+            Εάν θέλετε να συνεισφέρετε στον εμπλουτισμό και τη βελτίωσή της
+            παρακαλώ επικοινωνήστε στο email
+            <span
+            class="email"
+            data-user="akprodromou"
+            data-domain="gmail.com"
+          ></span>.
+          </p>
         </div>
-        <button type="submit">Αποστολή</button>
-      </form>
+      </div>
     </div>
-  </div>
 
   <!-- Scripts go below -->
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
@@ -201,7 +203,14 @@
           .openOn(window.app.map);
       }
     }
-
+    var emailElements = document.getElementsByClassName("email");
+      for (var i = 0; i < emailElements.length; i++) {
+        var element = emailElements[i];
+        var user = element.getAttribute("data-user");
+        var domain = element.getAttribute("data-domain");
+        var email = user + "@" + domain;
+        element.textContent = email;
+      }
 
   </script>
 </body>
