@@ -30,19 +30,21 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 
 // open the database
-// const dbusers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/users.db"));
-// const dbmarkers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/markers.db"));
+const dbusers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/users.db"));
+const dbmarkers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/markers.db"));
 
-const dbusers = new sqlite3.Database("/public/uploads/images/users.db");
-const dbmarkers = new sqlite3.Database("/public/uploads/images/markers.db");
+// Renderer.com alternative routes
+// const dbusers = new sqlite3.Database("/public/uploads/images/users.db");
+// const dbmarkers = new sqlite3.Database("/public/uploads/images/markers.db");
 
 // use the express.static middleware to serve the static files in the "public" directory
-app.use('/public', express.static('public'))
+app.use('/public', express.static(path.join(__dirname, 'public')))
+
 
 // Set up multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "/public/uploads/images"); // Set the destination folder for uploaded images
+    cb(null, "public/uploads/images"); // Set the destination folder for uploaded images
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -88,7 +90,8 @@ dbmarkers.run(
   lng REAL,
   image BLOB,
   date DATETIME,
-  caption TEXT
+  caption TEXT,
+  angle INT
 )`,
   function (err) {
     if (err) {
@@ -212,21 +215,22 @@ app.get("/markers", (req, res) => {
         photo: `data:image/jpeg;base64,${marker.image.toString("base64")}`,
         date: marker.date,
         caption: marker.caption,
+        angle: marker.angle,
       }));
       res.json(parsedMarkers);
     }
   });
 });
 
-// add new endpoint to save markers
+// Add new endpoint to save markers
 app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res) => {
-  const { lat, lng, date, caption } = req.body;
+  const { lat, lng, date, caption, angle } = req.body;
   const image = req.file;
   try {
     const imageBuffer = fs.readFileSync(image.path); // Read the image file using fs.readFileSync
     await dbmarkers.run(
-      "INSERT INTO markers (lat, lng, image, date, caption) VALUES (?, ?, ?, ?, ?)",
-      [lat, lng, imageBuffer, date, caption],
+      "INSERT INTO markers (lat, lng, image, date, caption, angle) VALUES (?, ?, ?, ?, ?, ?)",
+      [lat, lng, imageBuffer, date, caption, angle],
       function (err) {
         if (err) {
           console.log(err);
@@ -247,7 +251,7 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
 // Retrieve marker data endpoint
 app.get('/markers/:id', (req, res) => {
   const markerId = req.params.id;
-  // Retrieve the marker data for the given id from your data source
+  // Retrieve the marker from the markers variable
   dbmarkers.get(
     "SELECT * FROM markers WHERE id = ?",
     [markerId],
@@ -258,9 +262,8 @@ app.get('/markers/:id', (req, res) => {
       } else if (!row) {
         res.status(404).send("Marker not found");
       } else {
-        const markerData = row; // Assuming row contains the marker data
-        // Render the marker.ejs template and pass the markerData
-        ejs.renderFile('views/marker.ejs', { markerData }, (err, html) => {
+          const markerData = row; // Store the marker object in the markerData
+        ejs.renderFile('views/marker.ejs', { markerData, markerId }, (err, html) => {
           if (err) {
             console.error("Error rendering marker template:", err);
             res.status(500).send("Error rendering marker template");
@@ -272,7 +275,6 @@ app.get('/markers/:id', (req, res) => {
     }
   );
 });
-
 
 // Display the edit page
 app.get('/markers/:id/edit', checkAuthenticated, (req, res) => {
@@ -301,8 +303,8 @@ app.post('/markers/:id/edit', checkAuthenticated, (req, res) => {
 
   // Update the marker data in the database
   dbmarkers.run(
-    "UPDATE markers SET lat = ?, lng = ?, date = ?, caption = ? WHERE id = ?",
-    [lat, lng, date, caption, markerId],
+    "UPDATE markers SET lat = ?, lng = ?, date = ?, caption = ?, angle = ? WHERE id = ?",
+    [lat, lng, date, caption, angle, markerId],
     (err) => {
       if (err) {
         console.error("Error updating marker data:", err);
@@ -346,6 +348,7 @@ app.get("/check-authentication", function (req, res) {
   const isAuthenticated = req.isAuthenticated(); 
   res.json({ isAuthenticated: isAuthenticated });
 });
+
 
 // Start the server
 app.listen(port, () => {

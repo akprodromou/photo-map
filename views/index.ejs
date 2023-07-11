@@ -26,7 +26,7 @@
 
   <body>
     <!-- Add the "About" link -->
-    <a href="#" id="aboutLink" class="popup-link" onclick="openPopup()"
+    <a href="#" id="aboutLink" class="popup-link" onclick="openAboutPopup()"
       >Σχετικά</a
     >
 
@@ -44,7 +44,7 @@
     <!-- About Popup -->
     <div id="aboutPopup" class="leaflet-popup about-popup">
       <div class="leaflet-popup-content about-popup-content">
-        <span class="close" onclick="closePopup()">&times;</span>
+        <span class="close" onclick="closeAboutPopup()">&times;</span>
         <h2>Σχετικά με τη σελίδα</h2>
         <div class="about-text">
           <p>
@@ -61,25 +61,15 @@
             <a href="https://www.facebook.com/groups/oldthessaloniki/"
               >Παλιές φωτογραφίες της Θεσσαλονίκης</a
             >.<br /><br />
-            Εάν θέλετε να συνεισφέρετε στον εμπλουτισμό και τη βελτίωσή της παρακαλώ επικοινωνήστε
-            χρησιμοποιώντας την παρακάτω φόρμα:
+            Εάν θέλετε να συνεισφέρετε στον εμπλουτισμό και τη βελτίωσή της
+            παρακαλώ επικοινωνήστε στο email
+            <span
+            class="email"
+            data-user="akprodromou"
+            data-domain="gmail.com"
+          ></span>.
           </p>
         </div>
-        <form
-          action="mailto:akprodromou@gmx.com"
-          method="post"
-          enctype="text/plain"
-        >
-          <div class="comment-area">
-            <textarea
-              id="comments"
-              name="comments"
-              rows="4"
-              cols="50"
-            ></textarea>
-          </div>
-          <button type="submit">Αποστολή</button>
-        </form>
       </div>
     </div>
 
@@ -89,6 +79,9 @@
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
       crossorigin=""
     ></script>
+    <script type="module" src="/public/js/leaflet.rotatedMarker.js"></script>
+    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
     <script src="/public/js/auth.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -113,13 +106,13 @@
       var aboutPopup = document.getElementById("aboutPopup");
 
       // Open the about popup
-      function openPopup() {
+      function openAboutPopup() {
         aboutPopup.style.visibility = "visible";
         aboutPopup.classList.add("visible");
       }
 
       // Close the about popup
-      function closePopup() {
+      function closeAboutPopup() {
         aboutPopup.style.visibility = "hidden";
         aboutPopup.classList.remove("visible");
       }
@@ -130,9 +123,18 @@
         var isClickInsidePopup =
           aboutPopup.contains(target) || target === aboutLink;
         if (!isClickInsidePopup && aboutPopup.style.visibility === "visible") {
-          closePopup();
+          closeAboutPopup();
         }
       });
+
+      var emailElements = document.getElementsByClassName("email");
+      for (var i = 0; i < emailElements.length; i++) {
+        var element = emailElements[i];
+        var user = element.getAttribute("data-user");
+        var domain = element.getAttribute("data-domain");
+        var email = user + "@" + domain;
+        element.textContent = email;
+      }
     </script>
   </body>
 </html>

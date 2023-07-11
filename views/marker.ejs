@@ -1,67 +1,209 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Time Traveler's Guide to Thessaloniki</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-      crossorigin=""
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" type="text/css" href="/public/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-***" crossorigin="anonymous" />
 
-  </head>
+<head>
+  <title>Time Traveler's Guide to Thessaloniki</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/public/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-***" crossorigin="anonymous" />
+</head>
 
-  <body>
-    <!-- Add a map -->
-    <div id="mapid"></div>
-    <!-- Add the slider -->
-    <div class="slider-container">
-      <button id="hideButton" onclick="toggleSlider()">
-        <img src="../public/slider_arrow.png" alt="Hide/Show Arrow" />
-      </button>
-      <div id="slider"></div>
+<body>
+  <!-- Add the "About" link -->
+  <a href="#" id="aboutLink" class="popup-link" onclick="openAboutPopup()">Σχετικά</a>
+
+  <!-- Add a map -->
+  <div id="mapid"></div>
+
+  <!-- Add the slider -->
+  <div class="slider-container">
+    <button id="hideButton" onclick="toggleSlider()">
+      <img src="/public/slider_arrow.png" alt="Hide/Show Arrow" />
+    </button>
+    <div id="slider"></div>
+  </div>
+
+  <!-- About Popup -->
+  <div id="aboutPopup" class="leaflet-popup about-popup">
+    <div class="leaflet-popup-content about-popup-content">
+      <span class="close" onclick="closeAboutPopup()">&times;</span>
+      <h2>Σχετικά με τη σελίδα</h2>
+      <div class="about-text">
+        <p>
+          Η σελίδα αυτή έχει ως στόχο να συγκεντρώσει σε ένα σημείο
+          φωτογραφίες από την ιστορία της Θεσσαλονίκης, δημιουργώντας έτσι μια
+          αφήγηση για τη μεταμόρφωση της πόλης από το 1860 κι έπειτα. Η
+          λειτουργία της είναι μη κερδοσκοπική και το υλικό προέρχεται από
+          ιστότοπους που περιλαμβάνουν την βιβλιοθήκη
+          <a
+            href="https://gallica.bnf.fr/services/engine/search/sru?operation=searchRetrieve&version=1.2&query=%28gallica%20all%20%22salonique%22%29&lang=en&suggest=0#resultat-id-12">Gallica</a>
+          και τη σελίδα
+          <a href="https://www.facebook.com/groups/oldthessaloniki/">Παλιές φωτογραφίες της
+            Θεσσαλονίκης</a>.<br /><br />
+          Εάν θέλετε να συνεισφέρετε στον εμπλουτισμό και τη βελτίωσή της
+          παρακαλώ επικοινωνήστε χρησιμοποιώντας την παρακάτω φόρμα:
+        </p>
+      </div>
+      <form action="mailto:akprodromou@gmx.com" method="post">
+        <div class="comment-area">
+          <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+        </div>
+        <button type="submit">Αποστολή</button>
+      </form>
     </div>
+  </div>
 
-    <!-- Scripts go below -->
-    <script
-      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-      crossorigin=""
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
-    <script src="/public/js/auth.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="module" src="/public/js/app.js"></script>
-    <script>
-      // Retrieve the marker data from the server-side code
-      var markerId = document.getElementById("mapid").dataset.markerId;
-      var markerLat = document.getElementById("mapid").dataset.markerLat;
-      var markerLng = document.getElementById("mapid").dataset.markerLng;
-      var markerImage = document.getElementById("mapid").dataset.markerImage;
-    </script>
+  <!-- Scripts go below -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+  <script src="/public/js/leaflet.rotatedMarker.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+  <script src="/public/js/auth.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="module" src="/public/js/app.js"></script>
+  <script>
+    var sliderContainer = document.querySelector(".slider-container");
+    var hideButton = document.getElementById("hideButton");
+    var mapContainer = document.getElementById("mapid");
+    var sliderVisible = true;
 
-    <script>
-      var sliderContainer = document.querySelector(".slider-container");
-      var hideButton = document.getElementById("hideButton");
-      var mapContainer = document.getElementById("mapid");
-      var sliderVisible = true;
+    function toggleSlider() {
+      sliderContainer.classList.toggle("hidden"); // Add or remove the "hidden" class
+      mapContainer.style.height = sliderVisible
+        ? "100%"
+        : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
+      sliderVisible = !sliderVisible;
+    }
 
-      function toggleSlider() {
-        sliderContainer.classList.toggle("hidden"); // Add or remove the "hidden" class
-        mapContainer.style.height = sliderVisible
-          ? "100%"
-          : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
-        sliderVisible = !sliderVisible;
+
+    // About popup code
+
+    var aboutLink = document.getElementById("aboutLink");
+    var aboutPopup = document.getElementById("aboutPopup");
+
+    // Open the about popup
+    function openAboutPopup() {
+      aboutPopup.style.visibility = "visible";
+      aboutPopup.classList.add("visible");
+    }
+
+    // Close the about popup
+    function closeAboutPopup() {
+      aboutPopup.style.visibility = "hidden";
+      aboutPopup.classList.remove("visible");
+    }
+
+    // Close the about popup when the user clicks outside of it
+    window.addEventListener("click", function (event) {
+      var target = event.target;
+      var isClickInsidePopup =
+        aboutPopup.contains(target) || target === aboutLink;
+      if (!isClickInsidePopup && aboutPopup.style.visibility === "visible") {
+        closeAboutPopup();
       }
-    </script>
-  </body>
+    });
+
+
+    var cameraIcon = L.icon({
+      iconUrl: "/public/photograph.png",
+      iconSize: [28, 28],
+      shadowSize: [68, 95],
+      shadowAnchor: [22, 94],
+    });
+
+    
+    // Open the marker popup on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      const markerId = <%= markerId %>; // Retrieve the markerId
+      const markerData = <%- JSON.stringify(markerData) %>; // Retrieve the markerData
+
+      // Call the openMarkerPopup function
+      openMarkerPopup(markerData);
+    });
+
+    // Open marker popup based on the ID parameter
+    function openMarkerPopup(markerData) {
+      if (markerData) {
+        const marker = L.marker([markerData.lat, markerData.lng], {
+          icon: cameraIcon,
+        });
+
+        const popupContent = document.createElement("div");
+        popupContent.classList.add("popup-content");
+
+        // Create the image container
+        const imageContainer = document.createElement("div");
+        imageContainer.classList.add("popup-image");
+        popupContent.appendChild(imageContainer);
+
+        // Create an image element
+        const image = document.createElement("img");
+
+        // Convert Buffer data to base64-encoded string
+        const imageBuffer = markerData.image;
+        const base64Image = btoa(
+          new Uint8Array(imageBuffer.data)
+            .reduce((data, byte) => data + String.fromCharCode(byte), "")
+        );
+
+        // Set the image source using the base64-encoded string
+        image.src = `data:${imageBuffer.type};base64,${base64Image}`;
+        image.alt = "Marker Image";
+        imageContainer.appendChild(image);
+
+        const captionContainer = document.createElement("div");
+        captionContainer.classList.add("caption-container");
+        captionContainer.style.display = "flex";
+        popupContent.appendChild(captionContainer);
+
+        const markerDate = new Date(markerData.date);
+        const startYearDisplay = markerDate.getFullYear() - (markerDate.getFullYear() % 10);
+        const endYearDisplay = startYearDisplay + 10;
+      
+        const decadeContainer = document.createElement("div");
+        decadeContainer.classList.add("decade-container");
+        decadeContainer.innerHTML = `<strong>${startYearDisplay}-${endYearDisplay}</strong>`;
+        captionContainer.appendChild(decadeContainer);
+
+        const shareButton = document.createElement("button");
+        shareButton.type = "button";
+        shareButton.innerHTML = '<i class="fas fa-link"></i>';
+        shareButton.classList.add("share-button");
+        captionContainer.appendChild(shareButton);
+
+        const caption = document.createElement("span");
+        caption.classList.add("caption");
+        caption.innerHTML = markerData.caption;
+        popupContent.appendChild(caption);
+
+        // Add event listener for copying URL to clipboard
+        shareButton.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent the default behavior of the click event
+          const markerURL = `${window.location.origin}/markers/${markerData.markerId}`;
+          navigator.clipboard.writeText(markerURL).then(function () {
+            console.log("URL copied to clipboard:", markerURL);
+            shareButton.classList.add("fade-in-animation");
+            setTimeout(function () {
+              shareButton.classList.remove("fade-in-animation");
+            }, 2000);
+          });
+        });
+
+        const popup = L.popup()
+          .setLatLng([markerData.lat, markerData.lng])
+          .setContent(popupContent)
+          .openOn(window.app.map);
+      }
+    }
+
+
+  </script>
+</body>
+
 </html>

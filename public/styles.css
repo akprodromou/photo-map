@@ -30,10 +30,20 @@ body {
   height: auto;
 }
 
-/* CSS rule to limit the height of the image */
-.popup-image img {
-  max-height: 50vh; 
-  max-width: 50vw;
+/* CSS rule for mobile screens */
+@media (max-width: 767px) {
+  .popup-image img {
+    max-height: 80vh;
+    max-width: 80vw;
+  }
+}
+
+/* CSS rule for larger screens */
+@media (min-width: 768px) {
+  .popup-image img {
+    max-height: 50vh; 
+    max-width: 50vw;
+  }
 }
 
 .leaflet-container {
@@ -278,36 +288,51 @@ button[type="submit"]:hover {
 .popup-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .popup-image {
-  margin-bottom: 10px; /* Add margin at the bottom of the image container */
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .caption-container {
   display: flex;
-  align-items: center;
-  margin-bottom: 10px; /* Add margin at the bottom of the caption container */
-}
-.caption {
-  display: inline-block; /* Make the caption an inline-block element */
+  justify-content: space-between;
+  align-items: flex-start; 
+  margin-bottom: 10px;
 }
 
+.caption {
+  margin-right: 5px;
+  margin-top: 3px;
+}
+
+/* Popup share button */
+
 .share-button {
-  font: 12px/20px Georgia, serif;
-  padding: 6px 5px 5px 5.5px;
+  font-size: 10px;
+  padding: 6px;
   background-color: white;
   color: #888888;
   border: 1px solid rgba(136, 136, 136, 0.3);
-  display: flex!important; 
   border-radius: 8px;
   box-shadow: 1px 1px 0px 0px rgba(136, 136, 136, 0.3);
-  transition: background-color 0.3s ease; /* Add transition for smooth animation */
+  transition: background-color 0.3s ease;
+  margin-left: 5px;
+  margin-top: 3px;
 }
 
 .share-button:hover {
   cursor: pointer; /* Change cursor style on hover */
+}
+
+.decade-container{
+  margin-top: 6.5px;
+}
+
+.edit-button {
+  display: none;
 }
 
 
@@ -322,6 +347,11 @@ button[type="submit"]:hover {
 
 .fade-in-animation {
   animation-name: fade-in;
-  animation-duration: 1s;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+.marker-icon {
+  opacity: 0.5;
 }
 
