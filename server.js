@@ -30,12 +30,12 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 
 // open the database
-const dbusers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/users.db"));
-const dbmarkers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/markers.db"));
+// const dbusers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/users.db"));
+// const dbmarkers = new sqlite3.Database(path.join(__dirname, "public/uploads/images/markers.db"));
 
 // Renderer.com alternative routes
-// const dbusers = new sqlite3.Database("/public/uploads/images/users.db");
-// const dbmarkers = new sqlite3.Database("/public/uploads/images/markers.db");
+const dbusers = new sqlite3.Database("/public/uploads/images/users.db");
+const dbmarkers = new sqlite3.Database("/public/uploads/images/markers.db");
 
 // use the express.static middleware to serve the static files in the "public" directory
 app.use('/public', express.static(path.join(__dirname, 'public')))
@@ -44,7 +44,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 // Set up multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/images"); // Set the destination folder for uploaded images
+    cb(null, "/public/uploads/images"); // Set the destination folder for uploaded images
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
