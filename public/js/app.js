@@ -1,14 +1,15 @@
 var cameraIcon = L.icon({
   iconUrl: "/public/photograph.png",
   iconSize: [26.3, 23.7],
-  iconAnchor: [8.4,17.7],
+  iconAnchor: [8.4, 17.7],
+  className: "camera-icon",
 });
 
 var triangleIcon = L.icon({
   iconUrl: "/public/triangle.png",
   iconSize: [48, 48.26],
-  iconAnchor: [24,0],
-  className: "marker-icon",
+  iconAnchor: [24, 0],
+  className: "triangle-icon",
 });
 
 var mymap = L.map("mapid").setView([40.64, 22.94], 13);
@@ -20,12 +21,16 @@ mymap.on("click", function () {
 var isAuthenticated = false; // Global variable to track authentication state
 
 L.tileLayer(
-  "https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=ajtqZHjRHNlgtB8yMorgThyqCEY89y4sUcHHu7v8b7KwozAIly2TrU5zhfqC6l5I",
-  {}
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+  {
+    attribution: "",
+  }
 ).addTo(mymap);
-mymap.attributionControl.addAttribution(
-  '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors'
-);
+
+// Hide the default Leaflet attribution control
+document.getElementsByClassName(
+  "leaflet-control-attribution"
+)[0].style.display = "none";
 
 // Define an empty array to store markers if it doesn't exist
 if (typeof markers === "undefined") {
@@ -38,13 +43,9 @@ function copyToClipboard(text) {
   textarea.value = text;
   document.body.appendChild(textarea);
   textarea.select();
-  document.execCommand("copy");
   document.body.removeChild(textarea);
   console.log("URL copied to clipboard:", text);
 }
-
-// Define the triangleMarker variable outside the loop
-let triangleMarker;
 
 // Fetch markers and display them on the map
 fetch("/markers")
@@ -81,13 +82,14 @@ fetch("/markers")
 
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
-        captionContainer.style.display = "flex"; 
+        captionContainer.style.display = "flex";
         popupContent.appendChild(captionContainer);
 
         const markerDate = new Date(markerData.date);
-        const startYearDisplay = markerDate.getFullYear() - (markerDate.getFullYear() % 10);
+        const startYearDisplay =
+        markerDate.getFullYear() - (markerDate.getFullYear() % 10);
         const endYearDisplay = startYearDisplay + 10;
-      
+
         const decadeContainer = document.createElement("div");
         decadeContainer.classList.add("decade-container");
         decadeContainer.innerHTML = `<strong>${startYearDisplay}-${endYearDisplay}</strong>`;
@@ -104,15 +106,26 @@ fetch("/markers")
         caption.innerHTML = markerData.caption;
         popupContent.appendChild(caption);
 
+        // Create the message element
+        const messageElement = document.createElement("span");
+        messageElement.classList.add("popup-message");
+        popupContent.appendChild(messageElement);
+
         // Add event listener for copying URL to clipboard
         shareButton.addEventListener("click", function (event) {
           event.preventDefault(); // Prevent the default behavior of the click event
           const markerURL = `${window.location.origin}/markers/${markerData.markerId}`;
           navigator.clipboard.writeText(markerURL).then(function () {
             console.log("URL copied to clipboard:", markerURL);
-            shareButton.classList.add("fade-in-animation"); 
+            shareButton.classList.add("fade-in-animation");
             setTimeout(function () {
               shareButton.classList.remove("fade-in-animation");
+            }, 2000);
+
+            // Set and display the message within the popup
+            messageElement.textContent = "Link copied!";
+            setTimeout(function () {
+              messageElement.textContent = "";
             }, 2000);
           });
         });
@@ -185,7 +198,6 @@ function updateSliderStep() {
   else if (window.matchMedia("(max-width: 768px)").matches) {
     defaultStep = 20;
   }
-
   slider.noUiSlider.updateOptions({
     step: defaultStep,
   });
@@ -215,10 +227,12 @@ $(document).ready(function () {
 
   // Call the function immediately to set the initial slider step
   updateSliderStep();
-
   // Update the slider step when the window is resized
   $(window).on("resize", updateSliderStep);
 });
+
+let clickedMarker = null;
+let triangleMarkersLayer = L.layerGroup().addTo(mymap); 
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
@@ -236,58 +250,91 @@ function filterMarkers() {
 
   // Variable to track the currently hovered marker and clicked marker
   let hoveredMarker = null;
-  let clickedMarker = null;
+
+  // Define the transparent circle options
+  const circleOptions = {
+    radius: 250,
+    opacity: 0,
+    fillOpacity: 0,
+    interactive: true,
+  };
+
+  // Clear the triangle markers layer
+  triangleMarkersLayer.clearLayers();
+
+  // Create a transparent circle for each marker
+  filteredMarkers.forEach(function (marker) {
+    if (!marker.circle) {
+      const circle = L.circle(marker.getLatLng(), circleOptions);
+      marker.circle = circle;
+      // Listen for zoom level changes
+      mymap.on("zoomend", function () {
+        // Adjust the circle radius based on the current zoom level
+        const zoomLevel = mymap.getZoom();
+        const radius = calculateRadius(zoomLevel); // Calculate the radius based on the zoom level
+        circle.setRadius(radius);
+      });
+
+      // Function to calculate the circle radius based on the zoom level
+      function calculateRadius(zoomLevel) {
+        return 250 - 12 * zoomLevel;
+      }
+    }
+  });
 
   // Loop through all markers and show or hide them based on whether they are in the filtered list
   markers.forEach(function (marker) {
     if (filteredMarkers.includes(marker)) {
       if (!mymap.hasLayer(marker)) {
         marker.addTo(mymap);
+        marker.circle.addTo(mymap); // Add the circle to the map
       }
 
-      // Create a triangle icon for the hovered state
-      const triangleMarker = L.marker(marker.getLatLng(), {
+      // Create a triangle marker for the hovered state
+      let triangleMarker = L.marker(marker.getLatLng(), {
         icon: triangleIcon,
         rotationAngle: marker.angle,
       });
 
+      triangleMarker.disableClickPropagation;
+
       marker.on("mouseover", function () {
         if (hoveredMarker && hoveredMarker !== marker) {
           // If another marker was previously hovered, hide its triangle icon
-          mymap.removeLayer(hoveredMarker.triangleMarker);
+          triangleMarkersLayer.removeLayer(hoveredMarker.triangleMarker);
           hoveredMarker.setIcon(cameraIcon);
         }
         if (hoveredMarker !== marker) {
           hoveredMarker = marker; // Update the currently hovered marker
           marker.setIcon(cameraIcon);
-          mymap.addLayer(triangleMarker); // Show the triangle icon
+          triangleMarkersLayer.addLayer(triangleMarker); // Show the triangle icon
         }
       });
 
-      marker.on("click", function () {
+      marker.on("click", function (event) {
         if (clickedMarker === marker) {
-          // If the marker being clicked is the current one, hide its triangle icon
           clickedMarker.setIcon(cameraIcon);
-          mymap.removeLayer(triangleMarker);
           clickedMarker = null; // Reset the currently clicked marker
         } else {
           // If another marker was previously clicked, hide its triangle icon
           if (clickedMarker) {
-            mymap.removeLayer(clickedMarker.triangleMarker);
+            triangleMarkersLayer.removeLayer(clickedMarker.triangleMarker);
             clickedMarker.setIcon(cameraIcon);
           }
           // Show the triangle icon for the clicked marker
-          clickedMarker = marker;
-          mymap.addLayer(triangleMarker);
+          clickedMarker = marker; // Update the currently clicked marker
+          triangleMarkersLayer.addLayer(clickedMarker.triangleMarker); 
+          marker.setIcon(cameraIcon);
+          triangleMarker.disableClickPropagation;
+          marker.openPopup();
+          window.history.pushState(null, null, `/markers/${marker.markerId}`); // Update the URL in the address bar
         }
-        L.DomEvent.stopPropagation(event); // Prevent the event from propagating to the map and closing the popup
-        window.history.pushState(null, null, `/markers/${marker.markerId}`); // Update the URL in the address bar
       });
 
       marker.on("mouseout", function () {
+        // If the marker being hovered is the current one and not clicked, hide its triangle icon
         if (hoveredMarker === marker && !clickedMarker) {
-          // If the marker being hovered is the current one and not clicked, hide its triangle icon
-          mymap.removeLayer(triangleMarker);
+          triangleMarkersLayer.removeLayer(triangleMarker);
           hoveredMarker.setIcon(cameraIcon);
           hoveredMarker = null; // Reset the currently hovered marker
         }
@@ -297,12 +344,29 @@ function filterMarkers() {
 
       // Store the triangle marker as a property of the marker object
       marker.triangleMarker = triangleMarker;
+      // Add click event listener to the circle
+      marker.circle.on("click", function (event) {
+        marker.fire("click"); // Trigger the click event on the associated marker
+      });
     } else {
+      if (marker.triangleMarker) {
+        triangleMarkersLayer.removeLayer(marker.triangleMarker);
+        delete marker.triangleMarker;
+      }
       if (mymap.hasLayer(marker)) {
         mymap.removeLayer(marker);
       }
     }
   });
+
+  if (clickedMarker && !filteredMarkers.includes(clickedMarker)) {
+    if (clickedMarker.triangleMarker) {
+      triangleMarkersLayer.removeLayer(clickedMarker.triangleMarker);
+      delete clickedMarker.triangleMarker;
+    }
+    clickedMarker.setIcon(cameraIcon);
+    clickedMarker = null; // Reset the currently clicked marker
+  }
 }
 
 function addMarker() {
@@ -410,7 +474,7 @@ function addMarker() {
             marker.decade = decade;
             marker.caption = captionInput.value; // Set the caption as a property of the marker
             marker.angle = angleInput.value; // Add the angle property to the marker
-            markers.push(marker); // add marker to markers array
+            markers.push(marker); // Add marker to markers array
             updateSlider();
           });
 
@@ -434,11 +498,19 @@ function addMarker() {
     });
 }
 
-mymap.on("click", addMarker);
+mymap.on("click", function (event) {
+  // Check if a marker icon was clicked
+  if (event.originalEvent.target === cameraIcon.options.iconUrl) {
+    return; // Do not trigger addMarker function if a marker icon was clicked
+  }
+  // Remove any marker-specific path
+  history.pushState(null, null, window.location.origin);
+  // Call the addMarker function
+  addMarker();
+});
 
 // Declare a global object to store variables
 window.app = {};
 
 // Assign the map object to the global object
 window.app.map = mymap;
-

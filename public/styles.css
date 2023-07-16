@@ -64,8 +64,8 @@ body {
   top: 20px;
   right: 20px;
   padding: 10px;
-  background-color: #3388ff;
-  color: #fff;
+  background-color: #BFD8F2;
+  color: #000000;
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
@@ -73,7 +73,7 @@ body {
 }
 
 #aboutLink:hover {
-  background-color: #2962b8;
+  background-color: #d4e5f6;
 }
 
 .about-popup {
@@ -191,7 +191,8 @@ button[type="submit"]:hover {
   bottom: 55px; /* Adjust the top value to position the button */
   left: calc(50% - 15px);
   padding: 5px;
-  background-color: transparent;
+  background-color: transparent; 
+  color: #d4ba93;
   border: none;
   cursor: pointer;
   visibility: visible; /* Ensure the button is visible */
@@ -201,8 +202,8 @@ button[type="submit"]:hover {
   ); /* Rotate the arrow image 180 degrees when the slider is hidden */
 }
 
-#hideButton img {
-  width: 20px; /* Adjust the width of the arrow image */
+#hideButton i {
+  width: 20px; 
   /* transition: transform 0.3s ease; Add transition for smooth animation */
 }
 
@@ -229,6 +230,7 @@ button[type="submit"]:hover {
     100% - 100px
   ); /* Subtract the height of the slider container from 100% */
   transition: height 0.3s ease; /* Add transition for smooth animation */
+  z-index: 1;
 }
 
 .map-container {
@@ -351,7 +353,16 @@ button[type="submit"]:hover {
   animation-fill-mode: forwards;
 }
 
-.marker-icon {
-  opacity: 0.5;
+.triangle-icon {
+  opacity: 0.25; /* Set the opacity of the icon */
+  pointer-events: none; /* Disable pointer events for the icon */
 }
+
+.popup-message {
+  color: rgba(0, 0, 0, 0.4);
+  font: 12px/20px Georgia, serif;
+  transition: opacity 0.3s;
+  text-align: right;
+}
+
 

@@ -36,7 +36,7 @@
     <!-- Add the slider -->
     <div class="slider-container">
       <button id="hideButton" onclick="toggleSlider()">
-        <img src="/public/slider_arrow.png" alt="Hide/Show Arrow" />
+        <i class="far fa-eye-slash"></i>
       </button>
       <div id="slider"></div>
     </div>
@@ -98,6 +98,11 @@
           ? "100%"
           : "calc(100% - 100px)"; // Adjust the map height based on slider visibility
         sliderVisible = !sliderVisible;
+
+          // Update the button icon based on slider visibility
+        const hideButton = document.querySelector("#hideButton i");
+        hideButton.classList.toggle("fa-eye-slash");
+        hideButton.classList.toggle("fa-eye");
       }
 
       // About popup code
