@@ -394,10 +394,10 @@ function addMarker() {
           dateInput.name = "date";
           dateInput.required = true;
 
-          var captionInput = document.createElement("input");
-          captionInput.type = "text";
+          var captionInput = document.createElement("textarea");
           captionInput.name = "caption";
           captionInput.placeholder = "Caption";
+          captionInput.rows = 4;
 
           var angleInput = document.createElement("input");
           angleInput.type = "text";
