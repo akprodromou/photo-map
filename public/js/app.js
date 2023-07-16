@@ -12,7 +12,11 @@ var triangleIcon = L.icon({
   className: "triangle-icon",
 });
 
-var mymap = L.map("mapid").setView([40.64, 22.94], 13);
+var mymap = L.map("mapid", {
+  minZoom: 7,
+  maxZoom: 18})
+  .setView([40.64, 22.94], 13);
+
 // Add an event listener to the map to handle clicks outside the popup
 mymap.on("click", function () {
   history.pushState(null, null, window.location.origin); // Remove any marker-specific path
