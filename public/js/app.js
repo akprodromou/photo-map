@@ -78,9 +78,11 @@ fetch("/markers")
         imageContainer.classList.add("popup-image");
         popupContent.appendChild(imageContainer);
 
-        const imageLoader = document.createElement("div");
-        imageLoader.classList.add("image-loader");
-        imageContainer.appendChild(imageLoader);
+        // Create an image element
+        const image = document.createElement("img");
+        image.src = markerData.photo;
+        image.alt = "Marker Image";
+        imageContainer.appendChild(image);
 
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
@@ -89,7 +91,7 @@ fetch("/markers")
 
         const markerDate = new Date(markerData.date);
         const startYearDisplay =
-          markerDate.getFullYear() - (markerDate.getFullYear() % 10);
+        markerDate.getFullYear() - (markerDate.getFullYear() % 10);
         const endYearDisplay = startYearDisplay + 10;
 
         const decadeContainer = document.createElement("div");
@@ -155,55 +157,16 @@ fetch("/markers")
         marker.angle = markerData.angle;
         markers.push(marker);
 
-        // Preload the marker image if it's the currently selected marker
-        if (markerIdParam && markerData.markerId === parseInt(markerIdParam)) {
-          const image = new Image();
-          image.src = markerData.photo;
-          image.alt = "Marker Image";
-
-          // Remove the image loader and append the loaded image
-          const imageLoader = popupContent.querySelector(".image-loader");
-          if (imageLoader) {
-            imageLoader.innerHTML = ""; // Clear the image loader container
-            imageLoader.appendChild(image);
-          }
-
-          markerData.loaded = true;
-        }
+        marker.on("click", function (event) {
+          L.DomEvent.stopPropagation(event); // Prevent the event from propagating to the map and closing the popup
+        });
       }
     });
 
     updateSlider();
     filterMarkers();
-
-    // Load the marker image when a marker is clicked
-    markers.forEach((marker) => {
-      marker.on("click", function () {
-        const markerData = markersData.find(
-          (markerData) => markerData.markerId === marker.markerId
-        );
-
-        if (!markerData.loaded) {
-          const imageContainer = marker.getPopup().getContent().querySelector(".popup-image");
-          const imageLoader = marker.getPopup().getContent().querySelector(".image-loader");
-
-          const image = new Image();
-          image.src = markerData.photo;
-          image.alt = "Marker Image";
-
-          // Remove the image loader and append the loaded image
-          if (imageLoader) {
-            imageLoader.innerHTML = ""; // Clear the image loader container
-            imageContainer.appendChild(image);
-          }
-
-          markerData.loaded = true;
-        }
-      });
-    });
   })
   .catch((error) => console.error("Error fetching markers:", error));
-
 
 // A function that extracts the decade from a date
 function getDecade(dateString) {
