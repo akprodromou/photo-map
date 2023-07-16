@@ -78,11 +78,9 @@ fetch("/markers")
         imageContainer.classList.add("popup-image");
         popupContent.appendChild(imageContainer);
 
-        // Create an image element
-        const image = document.createElement("img");
-        image.src = markerData.photo;
-        image.alt = "Marker Image";
-        imageContainer.appendChild(image);
+        const imageLoader = document.createElement("div");
+        imageLoader.classList.add("image-loader");
+        imageContainer.appendChild(imageLoader);
 
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
@@ -90,8 +88,7 @@ fetch("/markers")
         popupContent.appendChild(captionContainer);
 
         const markerDate = new Date(markerData.date);
-        const startYearDisplay =
-        markerDate.getFullYear() - (markerDate.getFullYear() % 10);
+        const startYearDisplay = markerDate.getFullYear() - (markerDate.getFullYear() % 10);
         const endYearDisplay = startYearDisplay + 10;
 
         const decadeContainer = document.createElement("div");
@@ -160,6 +157,34 @@ fetch("/markers")
         marker.on("click", function (event) {
           L.DomEvent.stopPropagation(event); // Prevent the event from propagating to the map and closing the popup
         });
+
+        // Load the marker image when the marker is clicked
+        marker.on("click", function () {
+          if (!markerData.loaded) {
+            const image = new Image();
+            image.src = markerData.photo;
+            image.alt = "Marker Image";
+
+            // Remove the image loader and append the loaded image
+            imageLoader.remove();
+            imageContainer.appendChild(image);
+
+            markerData.loaded = true;
+          }
+        });
+
+        // Preload the marker image if it's the currently selected marker
+        if (markerIdParam && markerData.markerId === parseInt(markerIdParam)) {
+          const image = new Image();
+          image.src = markerData.photo;
+          image.alt = "Marker Image";
+
+          // Remove the image loader and append the loaded image
+          imageLoader.remove();
+          imageContainer.appendChild(image);
+
+          markerData.loaded = true;
+        }
       }
     });
 
