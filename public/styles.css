@@ -30,22 +30,6 @@ body {
   height: auto;
 }
 
-/* CSS rule for mobile screens */
-@media (max-width: 767px) {
-  .popup-image img {
-    max-height: 80vh;
-    max-width: 80vw;
-  }
-}
-
-/* CSS rule for larger screens */
-@media (min-width: 768px) {
-  .popup-image img {
-    max-height: 50vh; 
-    max-width: 50vw;
-  }
-}
-
 .leaflet-container {
   font: 12px/20px Georgia, serif;
 }
@@ -233,6 +217,34 @@ button[type="submit"]:hover {
   z-index: 1;
 }
 
+/* CSS rule for mobile screens */
+@media (max-width: 767px) {
+  #mapid {
+    height: calc(
+      100% - 90px
+    ); /* Subtract the height of the slider container from 100% */
+  }
+  .slider-container {
+    bottom: 20px;
+    height: 90px;
+  }
+  #hideButton {
+    bottom: 52.5px; /* Adjust the top value to position the button */
+  }
+  .popup-image img {
+    max-height: 80vh;
+    max-width: 80vw;
+  }
+}
+
+/* CSS rule for larger screens */
+@media (min-width: 768px) {
+  .popup-image img {
+    max-height: 50vh; 
+    max-width: 50vw;
+  }
+}
+
 .map-container {
   position: absolute;
   top: 0;
@@ -364,5 +376,3 @@ button[type="submit"]:hover {
   transition: opacity 0.3s;
   text-align: right;
 }
-
-
