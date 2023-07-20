@@ -257,7 +257,7 @@ function filterMarkers() {
 
   // Define the transparent circle options
   const circleOptions = {
-    radius: 250,
+    radius: 125,
     opacity: 0,
     fillOpacity: 0,
     interactive: true,
@@ -281,7 +281,7 @@ function filterMarkers() {
 
       // Function to calculate the circle radius based on the zoom level
       function calculateRadius(zoomLevel) {
-        return 250 - 12 * zoomLevel;
+        return 125 - 12 * zoomLevel;
       }
     }
   });
