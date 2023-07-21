@@ -79,10 +79,10 @@ fetch("/markers")
         popupContent.appendChild(imageContainer);
 
         // Create an image element
-        const image = document.createElement("img");
-        image.src = markerData.photo;
-        image.alt = "Marker Image";
-        imageContainer.appendChild(image);
+        // const image = document.createElement("img");
+        // image.src = markerData.photo;
+        // image.alt = "Marker Image";
+        // imageContainer.appendChild(image);
 
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
