@@ -212,7 +212,7 @@ app.get("/markers", (req, res) => {
         markerId: marker.id, // Include the markerId in the response
         lat: marker.lat,
         lng: marker.lng,
-        photo: `data:image/jpeg;base64,${marker.image.toString("base64")}`,
+        // photo: `data:image/jpeg;base64,${marker.image.toString("base64")}`,
         date: marker.date,
         caption: marker.caption,
         angle: marker.angle,
