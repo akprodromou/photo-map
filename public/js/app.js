@@ -79,10 +79,10 @@ fetch("/markers")
         popupContent.appendChild(imageContainer);
 
         // Create an image element
-        const image = document.createElement("img");
-        image.src = markerData.photo;
-        image.alt = "Marker Image";
-        imageContainer.appendChild(image);
+        // const image = document.createElement("img");
+        // image.src = markerData.photo;
+        // image.alt = "Marker Image";
+        // imageContainer.appendChild(image);
 
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
@@ -159,6 +159,15 @@ fetch("/markers")
 
         marker.on("click", function (event) {
           L.DomEvent.stopPropagation(event); // Prevent the event from propagating to the map and closing the popup
+          console.log('hi');
+          if (!markerData.loaded) {
+            // Load the image when the marker is clicked
+            const image = document.createElement("img");
+            image.src = `/markers/${markerData.markerId}/photo`; // Use the photo URL from the fetched marker details
+            
+            image.alt = "Marker Image";
+            imageContainer.appendChild(image);
+          }
         });
       }
     });
