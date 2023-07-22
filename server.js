@@ -317,6 +317,7 @@ app.get('/markers/:id/edit', checkAuthenticated, (req, res) => {
 app.post('/markers/:id/edit', checkAuthenticated, (req, res) => {
   const markerId = req.params.id;
   const { lat, lng, date, caption, angle } = req.body;
+  const { lat, lng, date, caption, angle } = req.body;
   // Update the marker data in the database
   dbmarkers.run(
     "UPDATE markers SET lat = ?, lng = ?, date = ?, caption = ?, angle = ? WHERE id = ?",
