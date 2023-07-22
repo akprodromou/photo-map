@@ -201,26 +201,6 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
 });
 
 // Markers 
-// get markers
-app.get("/markers", (req, res) => {
-  dbmarkers.all("SELECT * FROM markers", (err, markers) => {
-    if (err) {
-      console.log("Error fetching markers:", err);
-      res.sendStatus(500);
-    } else {
-      const parsedMarkers = markers.map((marker) => ({
-        markerId: marker.id, // Include the markerId in the response
-        lat: marker.lat,
-        lng: marker.lng,
-        photo: `data:image/jpeg;base64,${marker.image.toString("base64")}`,
-        date: marker.date,
-        caption: marker.caption,
-        angle: marker.angle,
-      }));
-      res.json(parsedMarkers);
-    }
-  });
-});
 
 // Add new endpoint to save markers
 app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res) => {
@@ -245,6 +225,27 @@ app.post("/markers", checkAuthenticated, upload.single("image"), async (req, res
     console.log(error);
     res.status(500).json({ message: "Error saving marker" });
   } 
+});
+
+// get markers
+app.get("/markers", (req, res) => {
+  dbmarkers.all("SELECT id, lat, lng, date, caption, angle FROM markers", (err, markers) => {
+    if (err) {
+      console.log("Error fetching markers:", err);
+      res.sendStatus(500);
+    } else {
+      const parsedMarkers = markers.map((marker) => ({
+        markerId: marker.id, // Include the markerId in the response
+        lat: marker.lat,
+        lng: marker.lng,
+        // photo: `data:image/jpeg;base64,${marker.image.toString("base64")}`,
+        date: marker.date,
+        caption: marker.caption,
+        angle: marker.angle,
+      }));
+      res.json(parsedMarkers);
+    }
+  });
 });
 
 // Server-side endpoint that handles requests for specific markers
@@ -276,6 +277,22 @@ app.get('/markers/:id', (req, res) => {
   );
 });
 
+// Fetch the photo of a marker
+app.get("/markers/:markerId/photo", (req, res) => {
+  const markerId = req.params.markerId;
+  // Fetch the image data for the given markerId from the database
+  dbmarkers.get("SELECT image FROM markers WHERE id = ?", [markerId], (err, marker) => {
+    if (err) {
+      console.log("Error fetching marker photo:", err);
+      res.sendStatus(500);
+    } else {
+      // Send the image data as a response
+      res.type("image/jpeg").send(marker.image);
+    }
+  });
+});
+
+
 // Display the edit page
 app.get('/markers/:id/edit', checkAuthenticated, (req, res) => {
   const markerId = req.params.id;
@@ -299,8 +316,7 @@ app.get('/markers/:id/edit', checkAuthenticated, (req, res) => {
 // Handle the form submission to update the marker
 app.post('/markers/:id/edit', checkAuthenticated, (req, res) => {
   const markerId = req.params.id;
-  const { lat, lng, date, caption } = req.body;
-
+  const { lat, lng, date, caption, angle } = req.body;
   // Update the marker data in the database
   dbmarkers.run(
     "UPDATE markers SET lat = ?, lng = ?, date = ?, caption = ?, angle = ? WHERE id = ?",

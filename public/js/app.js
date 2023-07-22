@@ -1,18 +1,73 @@
+var mymap = L.map("mapid", {
+  minZoom: 7,
+  maxZoom: 18,
+}).setView([40.64, 22.94], 13);
+
+let iconSize = 20; // Set a default icon size
+let currentZoomLevel = mymap.getZoom(); // Store the current zoom level
+
+// Listen for zoom level changes on the map
+mymap.on("zoomend", function () {
+  // Calculate the icon size based on the current zoom level
+  const zoomLevel = mymap.getZoom();
+  iconSize = calculateIconSize(zoomLevel);
+  
+
+  // Update the icon size for each camera marker
+  markers.forEach((marker) => {
+    if (marker instanceof L.Marker) {
+      marker.setIcon(
+        L.icon({
+          iconUrl: "/public/photograph.png",
+          iconSize: [iconSize, iconSize],
+          iconAnchor: [iconSize / 2, iconSize / 2],
+        })
+      );
+    }
+  });
+
+  // Update the icon size for the triangle icon
+  triangleIcon.options.iconSize = [iconSize, iconSize];
+});
+
+function calculateIconSize(zoomLevel) {
+  const minZoom = 7;
+  const maxZoom = 18;
+  const minIconSize = 1;
+  const maxIconSize = 30;
+
+  // Calculate the range of zoom levels between minZoom and maxZoom
+  const zoomRange = maxZoom - minZoom;
+  // Calculate the range of icon sizes between minIconSize and maxIconSize
+  const iconSizeRange = maxIconSize - minIconSize;
+  // Calculate the proportional size based on the current zoom level
+  const proportionalSize = (zoomLevel - minZoom) / zoomRange;
+  // Calculate the final icon size within the desired range
+  const iconSize = minIconSize + proportionalSize * iconSizeRange;
+
+  return iconSize;
+}
+
 var cameraIcon = L.icon({
   iconUrl: "/public/photograph.png",
-  iconSize: [26.3, 23.7],
-  iconAnchor: [8.4, 17.7],
+  iconSize: [iconSize, iconSize],
+  iconAnchor: [iconSize / 2, iconSize / 2],
   className: "camera-icon",
 });
 
-var triangleIcon = L.icon({
-  iconUrl: "/public/triangle.png",
-  iconSize: [48, 48.26],
-  iconAnchor: [24, 0],
-  className: "triangle-icon",
+var triangleIcon = L.divIcon({
+  html: `<div class="icon-wrapper">
+      <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58.1 58.46">
+          <defs><style>.cls-1{fill:#730C00;}</style></defs>
+          <title>camera-icon</title>
+          <path class="cls-1" d="M0,29.23A29.27,29.27,0,0,1,29,0a29.23,29.23,0,0,1,0,58.45A29.26,29.26,0,0,1,0,29.23ZM45,18.08,29.24,32.45,12.84,18c0,4.53-.05,8.23,0,11.92a3,3,0,0,0,.82,2c5.08,4.48,10.24,8.88,15.55,13.45,5.11-4.58,10.09-9,15-13.49a1.93,1.93,0,0,0,.64-1.25C45,26.73,45,22.79,45,18.08Z"/>
+      </svg>
+    </div>`,
+  iconSize: [iconSize, iconSize],
+  iconAnchor: [iconSize / 2, iconSize / 2],
+  className: "triangle-icon", // Add a class name to apply custom CSS styles if needed
 });
 
-var mymap = L.map("mapid").setView([40.64, 22.94], 13);
 // Add an event listener to the map to handle clicks outside the popup
 mymap.on("click", function () {
   history.pushState(null, null, window.location.origin); // Remove any marker-specific path
@@ -62,6 +117,7 @@ fetch("/markers")
 
     markersData.forEach((markerData) => {
       if (markerData.lat !== null && markerData.lng !== null) {
+        markerData.loaded = false; // Add a property to indicate if the image is loaded or not
         const marker = L.marker([markerData.lat, markerData.lng], {
           icon: cameraIcon,
         });
@@ -74,12 +130,6 @@ fetch("/markers")
         imageContainer.classList.add("popup-image");
         popupContent.appendChild(imageContainer);
 
-        // Create an image element
-        const image = document.createElement("img");
-        image.src = markerData.photo;
-        image.alt = "Marker Image";
-        imageContainer.appendChild(image);
-
         const captionContainer = document.createElement("div");
         captionContainer.classList.add("caption-container");
         captionContainer.style.display = "flex";
@@ -87,7 +137,7 @@ fetch("/markers")
 
         const markerDate = new Date(markerData.date);
         const startYearDisplay =
-        markerDate.getFullYear() - (markerDate.getFullYear() % 10);
+          markerDate.getFullYear() - (markerDate.getFullYear() % 10);
         const endYearDisplay = startYearDisplay + 10;
 
         const decadeContainer = document.createElement("div");
@@ -155,6 +205,14 @@ fetch("/markers")
 
         marker.on("click", function (event) {
           L.DomEvent.stopPropagation(event); // Prevent the event from propagating to the map and closing the popup
+          if (!markerData.loaded) {
+            // Load the image when the marker is clicked
+            const image = document.createElement("img");
+            image.src = `/markers/${markerData.markerId}/photo`; // Use the photo URL from the fetched marker details
+            image.alt = "Marker Image";
+            imageContainer.appendChild(image);
+            markerData.loaded = true; // Set the flag to indicate that the image is now loaded
+          }
         });
       }
     });
@@ -232,7 +290,6 @@ $(document).ready(function () {
 });
 
 let clickedMarker = null;
-let triangleMarkersLayer = L.layerGroup().addTo(mymap); 
 
 // Function to filter markers based on the slider range
 function filterMarkers() {
@@ -251,63 +308,28 @@ function filterMarkers() {
   // Variable to track the currently hovered marker and clicked marker
   let hoveredMarker = null;
 
-  // Define the transparent circle options
-  const circleOptions = {
-    radius: 250,
-    opacity: 0,
-    fillOpacity: 0,
-    interactive: true,
-  };
-
-  // Clear the triangle markers layer
-  triangleMarkersLayer.clearLayers();
-
-  // Create a transparent circle for each marker
-  filteredMarkers.forEach(function (marker) {
-    if (!marker.circle) {
-      const circle = L.circle(marker.getLatLng(), circleOptions);
-      marker.circle = circle;
-      // Listen for zoom level changes
-      mymap.on("zoomend", function () {
-        // Adjust the circle radius based on the current zoom level
-        const zoomLevel = mymap.getZoom();
-        const radius = calculateRadius(zoomLevel); // Calculate the radius based on the zoom level
-        circle.setRadius(radius);
-      });
-
-      // Function to calculate the circle radius based on the zoom level
-      function calculateRadius(zoomLevel) {
-        return 250 - 12 * zoomLevel;
-      }
-    }
-  });
-
   // Loop through all markers and show or hide them based on whether they are in the filtered list
   markers.forEach(function (marker) {
     if (filteredMarkers.includes(marker)) {
       if (!mymap.hasLayer(marker)) {
         marker.addTo(mymap);
-        marker.circle.addTo(mymap); // Add the circle to the map
       }
-
-      // Create a triangle marker for the hovered state
-      let triangleMarker = L.marker(marker.getLatLng(), {
-        icon: triangleIcon,
-        rotationAngle: marker.angle,
-      });
-
-      triangleMarker.disableClickPropagation;
 
       marker.on("mouseover", function () {
         if (hoveredMarker && hoveredMarker !== marker) {
           // If another marker was previously hovered, hide its triangle icon
-          triangleMarkersLayer.removeLayer(hoveredMarker.triangleMarker);
           hoveredMarker.setIcon(cameraIcon);
         }
         if (hoveredMarker !== marker) {
           hoveredMarker = marker; // Update the currently hovered marker
-          marker.setIcon(cameraIcon);
-          triangleMarkersLayer.addLayer(triangleMarker); // Show the triangle icon
+          marker.setIcon(triangleIcon);
+          const markerIconElement = marker.getElement();
+          if (markerIconElement) {
+            markerIconElement.style.setProperty(
+              "--angle",
+              marker.angle + "deg"
+            );
+          }
         }
       });
 
@@ -318,14 +340,20 @@ function filterMarkers() {
         } else {
           // If another marker was previously clicked, hide its triangle icon
           if (clickedMarker) {
-            triangleMarkersLayer.removeLayer(clickedMarker.triangleMarker);
             clickedMarker.setIcon(cameraIcon);
           }
           // Show the triangle icon for the clicked marker
           clickedMarker = marker; // Update the currently clicked marker
-          triangleMarkersLayer.addLayer(clickedMarker.triangleMarker); 
-          marker.setIcon(cameraIcon);
-          triangleMarker.disableClickPropagation;
+          if (marker.getIcon() !== triangleIcon) { // Check if the icon is not already set to triangleIcon
+            marker.setIcon(triangleIcon);
+            const markerIconElement = marker.getElement();
+            if (markerIconElement) {
+              markerIconElement.style.setProperty(
+                "--angle",
+                marker.angle + "deg"
+              );
+            }
+          }
           marker.openPopup();
           window.history.pushState(null, null, `/markers/${marker.markerId}`); // Update the URL in the address bar
         }
@@ -334,20 +362,12 @@ function filterMarkers() {
       marker.on("mouseout", function () {
         // If the marker being hovered is the current one and not clicked, hide its triangle icon
         if (hoveredMarker === marker && !clickedMarker) {
-          triangleMarkersLayer.removeLayer(triangleMarker);
           hoveredMarker.setIcon(cameraIcon);
           hoveredMarker = null; // Reset the currently hovered marker
         }
       });
 
       marker.setIcon(cameraIcon); // Set the initial icon as the camera icon
-
-      // Store the triangle marker as a property of the marker object
-      marker.triangleMarker = triangleMarker;
-      // Add click event listener to the circle
-      marker.circle.on("click", function (event) {
-        marker.fire("click"); // Trigger the click event on the associated marker
-      });
     } else {
       if (marker.triangleMarker) {
         triangleMarkersLayer.removeLayer(marker.triangleMarker);
@@ -394,10 +414,10 @@ function addMarker() {
           dateInput.name = "date";
           dateInput.required = true;
 
-          var captionInput = document.createElement("input");
-          captionInput.type = "text";
+          var captionInput = document.createElement("textarea");
           captionInput.name = "caption";
           captionInput.placeholder = "Caption";
+          captionInput.rows = 4;
 
           var angleInput = document.createElement("input");
           angleInput.type = "text";

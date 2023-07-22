@@ -30,22 +30,6 @@ body {
   height: auto;
 }
 
-/* CSS rule for mobile screens */
-@media (max-width: 767px) {
-  .popup-image img {
-    max-height: 80vh;
-    max-width: 80vw;
-  }
-}
-
-/* CSS rule for larger screens */
-@media (min-width: 768px) {
-  .popup-image img {
-    max-height: 50vh; 
-    max-width: 50vw;
-  }
-}
-
 .leaflet-container {
   font: 12px/20px Georgia, serif;
 }
@@ -233,6 +217,34 @@ button[type="submit"]:hover {
   z-index: 1;
 }
 
+/* CSS rule for mobile screens */
+@media (max-width: 767px) {
+  #mapid {
+    height: calc(
+      100% - 90px
+    ); /* Subtract the height of the slider container from 100% */
+  }
+  .slider-container {
+    bottom: 20px;
+    height: 90px;
+  }
+  #hideButton {
+    bottom: 52.5px; /* Adjust the top value to position the button */
+  }
+  .popup-image img {
+    max-height: 80vh;
+    max-width: 80vw;
+  }
+}
+
+/* CSS rule for larger screens */
+@media (min-width: 768px) {
+  .popup-image img {
+    max-height: 50vh; 
+    max-width: 50vw;
+  }
+}
+
 .map-container {
   position: absolute;
   top: 0;
@@ -353,16 +365,33 @@ button[type="submit"]:hover {
   animation-fill-mode: forwards;
 }
 
-.triangle-icon {
-  opacity: 0.25; /* Set the opacity of the icon */
-  pointer-events: none; /* Disable pointer events for the icon */
-}
-
 .popup-message {
   color: rgba(0, 0, 0, 0.4);
   font: 12px/20px Georgia, serif;
   transition: opacity 0.3s;
   text-align: right;
 }
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(var(--angle));
+  }
+}
+
+@keyframes scaleEffect {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1.0); } /* Adjust the scale factor as desired */
+}
+
+.cls-1 {
+  animation: rotation 0.5s ease-in-out;
+  animation: scaleEffect 0.15s ease-in-out;
+  transform-origin: center;
+  transform: rotate(var(--angle));
+}
+
 
 
