@@ -305,7 +305,7 @@ function filterMarkers() {
   const decadeRange = slider.noUiSlider.get();
   const filteredMarkers = markers.filter(function (marker) {
     const decade_test = marker.decade;
-    return decade_test >= decadeRange[0] && decade_test <= decadeRange[1];
+    return decade_test >= decadeRange[0] && decade_test < decadeRange[1];
   });
 
   // Remove all previous event listeners for mouseover and mouseout
