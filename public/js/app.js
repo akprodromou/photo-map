@@ -57,11 +57,14 @@ var cameraIcon = L.icon({
 
 var triangleIcon = L.divIcon({
   html: `<div class="icon-wrapper">
-      <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58.1 58.46">
-          <defs><style>.cls-1{fill:#730C00;}</style></defs>
-          <title>camera-icon</title>
-          <path class="cls-1" d="M0,29.23A29.27,29.27,0,0,1,29,0a29.23,29.23,0,0,1,0,58.45A29.26,29.26,0,0,1,0,29.23ZM45,18.08,29.24,32.45,12.84,18c0,4.53-.05,8.23,0,11.92a3,3,0,0,0,.82,2c5.08,4.48,10.24,8.88,15.55,13.45,5.11-4.58,10.09-9,15-13.49a1.93,1.93,0,0,0,.64-1.25C45,26.73,45,22.79,45,18.08Z"/>
-      </svg>
+  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 595.28 841.89" style="enable-background:new 0 0 595.28 841.89;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<polyline class="st0" points="286.71,36.24 286.71,729.1 126.51,554.61 "/>
+<line class="st0" x1="286.71" y1="729.1" x2="435.91" y2="554.61"/>
+</svg>
     </div>`,
   iconSize: [iconSize, iconSize],
   iconAnchor: [iconSize / 2, iconSize / 2],
