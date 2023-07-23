@@ -57,14 +57,20 @@ var cameraIcon = L.icon({
 
 var triangleIcon = L.divIcon({
   html: `<div class="icon-wrapper">
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 595.28 841.89" style="enable-background:new 0 0 595.28 841.89;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#000000;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-</style>
-<polyline class="st0" points="286.71,36.24 286.71,729.1 126.51,554.61 "/>
-<line class="st0" x1="286.71" y1="729.1" x2="435.91" y2="554.61"/>
-</svg>
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        viewBox="0 0 406.37 406.37" style="enable-background:new 0 0 406.37 406.37;" xml:space="preserve">
+        <style type="text/css">
+        .st0{fill:#CCCFF0;stroke:#000000;stroke-width:30;stroke-miterlimit:10;}
+        .st1{fill:none;stroke:#000000;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+        </style>
+        <g id="Layer_1">
+        <circle class="st0" cx="203.18" cy="203.18" r="188.07"/>
+        </g>
+        <g id="Layer_2">
+        <polyline class="st1" points="203.18,93.23 203.18,313.19 281.41,236.47 	"/>
+        <line class="st1" x1="203.18" y1="313.19" x2="124.96" y2="236.47"/>
+        </g>
+      </svg>
     </div>`,
   iconSize: [iconSize, iconSize],
   iconAnchor: [iconSize / 2, iconSize / 2],
@@ -212,7 +218,7 @@ fetch("/markers")
             // Load the image when the marker is clicked
             const image = document.createElement("img");
             image.src = `/markers/${markerData.markerId}/photo`; // Use the photo URL from the fetched marker details
-            image.alt = "Marker Image";
+            image.alt = "Image Loading";
             imageContainer.appendChild(image);
             markerData.loaded = true; // Set the flag to indicate that the image is now loaded
           }
