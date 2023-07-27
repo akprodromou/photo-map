@@ -225,7 +225,7 @@ button[type="submit"]:hover {
     ); /* Subtract the height of the slider container from 100% */
   }
   .slider-container {
-    bottom: 20px;
+    bottom: 25px;
     height: 90px;
   }
   #hideButton {
