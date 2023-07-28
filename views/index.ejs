@@ -98,15 +98,15 @@
 
       function toggleSlider() {
         sliderContainer.classList.toggle("hidden"); // Add or remove the "hidden" class
-     //   if (window.innerWidth < 767) {
-    //      mapContainer.style.height = sliderVisible
-      //      ? "100%"
-      //      : "calc(100% - 90px)"; // Adjust the map height based on slider visibility for smaller screens
-    //    } else {
-   //       mapContainer.style.height = sliderVisible
-     //       ? "100%"
-  //          : "calc(100% - 100px)"; // Adjust the map height based on slider visibility for larger screens
-   //     }
+        if (window.innerWidth < 767) {
+          mapContainer.style.height = sliderVisible
+            ? "100%"
+            : "calc(100% - 90px)"; // Adjust the map height based on slider visibility for smaller screens
+        } else {
+          mapContainer.style.height = sliderVisible
+            ? "100%"
+            : "calc(100% - 100px)"; // Adjust the map height based on slider visibility for larger screens
+        }
         sliderVisible = !sliderVisible;
 
         // Update the button icon based on slider visibility
