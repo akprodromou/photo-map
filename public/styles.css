@@ -219,8 +219,10 @@ button[type="submit"]:hover {
 /* CSS rule for mobile screens */
 @media (max-width: 767px) {
   #mapid {
-
-
+  }
+  .slider-container {
+    position: fixed;
+    bottom: 25px;
   }
   .popup-image img {
     max-height: 80vh;
