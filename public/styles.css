@@ -1,6 +1,6 @@
 body {
   height: 100%;
-/*   overflow: hidden; */
+  overflow: hidden;
 }
 
 /* Leaflet css */
@@ -225,7 +225,7 @@ button[type="submit"]:hover {
     ); /* Subtract the height of the slider container from 100% */
   }
   .slider-container {
-    bottom: 25px;
+    bottom: 20px;
     height: 90px;
   }
   #hideButton {
