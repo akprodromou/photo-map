@@ -3,7 +3,7 @@ var mymap = L.map("mapid", {
   maxZoom: 18,
 }).setView([40.64, 22.94], 13);
 
-let iconSize = 20; // Set a default icon size
+let iconSize = 15; // Set a default icon size
 let currentZoomLevel = mymap.getZoom(); // Store the current zoom level
 
 // Listen for zoom level changes on the map
@@ -34,7 +34,7 @@ function calculateIconSize(zoomLevel) {
   const minZoom = 7;
   const maxZoom = 18;
   const minIconSize = .5;
-  const maxIconSize = 25;
+  const maxIconSize = 20;
 
   // Calculate the range of zoom levels between minZoom and maxZoom
   const zoomRange = maxZoom - minZoom;
