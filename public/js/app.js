@@ -33,8 +33,8 @@ mymap.on("zoomend", function () {
 function calculateIconSize(zoomLevel) {
   const minZoom = 7;
   const maxZoom = 18;
-  const minIconSize = 1;
-  const maxIconSize = 30;
+  const minIconSize = .5;
+  const maxIconSize = 25;
 
   // Calculate the range of zoom levels between minZoom and maxZoom
   const zoomRange = maxZoom - minZoom;
