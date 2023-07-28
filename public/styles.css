@@ -96,7 +96,6 @@ body {
   cursor: pointer;
 }
 
-
 .about-text {
   margin-bottom: 10px;
   text-align: left;
@@ -159,10 +158,10 @@ button[type="submit"]:hover {
 
 .slider-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 15px;
   left: 0;
   right: 0;
-  height: 100px;
+  height: 95px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,7 +171,7 @@ button[type="submit"]:hover {
 
 #hideButton {
   position: absolute;
-  bottom: 55px; /* Adjust the top value to position the button */
+  bottom: 53.5px; /* Adjust the top value to position the button */
   left: calc(50% - 15px);
   padding: 5px;
   background-color: transparent; 
@@ -211,7 +210,7 @@ button[type="submit"]:hover {
   bottom: 0;
   width: 100%;
   height: calc(
-    100% - 100px
+    100% - 95px
   ); /* Subtract the height of the slider container from 100% */
   transition: height 0.3s ease; /* Add transition for smooth animation */
   z-index: 1;
@@ -220,16 +219,8 @@ button[type="submit"]:hover {
 /* CSS rule for mobile screens */
 @media (max-width: 767px) {
   #mapid {
-    height: calc(
-      100% - 90px
-    ); /* Subtract the height of the slider container from 100% */
-  }
-  .slider-container {
-    bottom: 20px;
-    height: 90px;
-  }
-  #hideButton {
-    bottom: 52.5px; /* Adjust the top value to position the button */
+
+
   }
   .popup-image img {
     max-height: 80vh;
